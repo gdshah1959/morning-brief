@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSP Morning Brief — Monday, October 12, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12161C; --panel:#171C24; --panel2:#1B212B;
+  --line:#29313D; --line-soft:#222932;
+  --text:#EFEEE9; --muted:#B4BCC8; --muted2:#8B95A3;
+  --green:#3DD68C; --amber:#F5B841; --red:#F0554A;
+  --up:#3DD68C; --down:#F0554A; --accent:#7FC6DC;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ink); color:var(--text);
+  font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+.wrap{max-width:1060px; margin:0 auto; padding:28px 22px 56px}
+
+/* --- masthead --- */
+.masthead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--line); padding-bottom:14px; gap:16px; flex-wrap:wrap;
+}
+.brand{font-family:"Archivo",sans-serif; font-weight:700; letter-spacing:.06em;
+  font-size:19px; text-transform:uppercase}
+.brand .tick{color:var(--accent)}
+.stamp{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--muted);
+  text-align:right; line-height:1.7}
+.stamp .d{color:var(--text)}
+.sample{display:inline-block; margin-left:8px; font-family:"Archivo",sans-serif;
+  font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--amber);
+  border:1px solid var(--amber); border-radius:3px; padding:2px 6px; vertical-align:2px}
+
+/* --- eyebrow / section header --- */
+.eyebrow{font-family:"Archivo",sans-serif; text-transform:uppercase;
+  letter-spacing:.16em; font-size:12px; font-weight:600; color:var(--muted);
+  display:flex; align-items:center; gap:10px; margin:34px 0 14px}
+.eyebrow::before{content:""; width:22px; height:2px; background:var(--accent); display:inline-block}
+.eyebrow .n{color:var(--muted2); font-family:"IBM Plex Mono",monospace; letter-spacing:0}
+.eyebrow-sub{margin:22px 0 14px; font-size:11px; color:var(--muted2)}
+.eyebrow-sub::before{background:var(--muted2)}
+
+/* --- HERO: andon + verdict --- */
+.hero{display:flex; gap:26px; align-items:stretch; margin-top:22px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line); border-radius:14px; padding:24px 26px}
+.andon-wrap{flex:0 0 118px; display:flex; align-items:center; justify-content:center}
+.andon{width:104px; height:auto}
+.verdict{flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center}
+.pill{align-self:flex-start; font-family:"Archivo",sans-serif; font-weight:700;
+  text-transform:uppercase; letter-spacing:.1em; font-size:11.5px;
+  padding:4px 10px; border-radius:20px; margin-bottom:12px}
+.pill.green{color:var(--green); background:rgba(61,214,140,.12); border:1px solid rgba(61,214,140,.4)}
+.pill.amber{color:var(--amber); background:rgba(245,184,65,.12); border:1px solid rgba(245,184,65,.4)}
+.pill.red{color:var(--red); background:rgba(240,85,74,.12); border:1px solid rgba(240,85,74,.4)}
+.verdict h1{font-family:"IBM Plex Sans",sans-serif; font-weight:600; font-size:25px;
+  line-height:1.2; margin:0 0 12px; letter-spacing:-.01em}
+.reasons{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px}
+.reasons li{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--muted);
+  background:var(--panel); border:1px solid var(--line-soft); border-radius:6px; padding:5px 9px}
+.score{margin-top:14px; font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--muted2)}
+.score b{color:var(--text)}
+
+/* --- metric grid --- */
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px}
+.cell{background:var(--panel); border:1px solid var(--line-soft); border-radius:10px; padding:13px 14px}
+.cell-label{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.08em;
+  font-size:11px; font-weight:600; color:var(--muted)}
+.cell-value{font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:500;
+  margin:4px 0 6px; font-variant-numeric:tabular-nums}
+.cell-foot{display:flex; justify-content:space-between; align-items:baseline; gap:8px}
+.cell-sub{font-size:11.5px; color:var(--muted2)}
+.cell-interp{margin-top:9px; padding-top:9px; border-top:1px solid var(--line-soft);
+  font-size:12px; line-height:1.45}
+.cell-interp.tone-calm{color:var(--muted)}
+.cell-interp.tone-watch{color:var(--amber)}
+.cell-interp.tone-stress{color:var(--red)}
+.chg{font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums}
+.chg.up,.mchg.up,.up{color:var(--up)}
+.chg.down,.mchg.down,.down{color:var(--down)}
+.chg.flat,.mchg.flat{color:var(--muted2)}
+
+/* --- overnight --- */
+.overnight{display:grid; grid-template-columns:1.3fr 1fr; gap:16px; align-items:start}
+.mkt-card{background:var(--panel); border:1px solid var(--line-soft); border-radius:10px; overflow:hidden}
+.mkt-card .cap{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.1em;
+  font-size:11px; font-weight:600; color:var(--muted); padding:11px 14px 6px}
+table.mkt{width:100%; border-collapse:collapse}
+table.mkt td{padding:7px 14px; border-top:1px solid var(--line-soft); font-size:13.5px}
+.mname{color:var(--text)}
+.mval,.mchg{font-family:"IBM Plex Mono",monospace; text-align:right; font-variant-numeric:tabular-nums}
+.mval{color:var(--muted)}
+.narrative{background:var(--panel); border:1px solid var(--line-soft);
+  border-left:3px solid var(--accent); border-radius:10px; padding:16px 18px}
+.narrative .cap{font-family:"Archivo",sans-serif; text-transform:uppercase;
+  letter-spacing:.1em; font-size:11px; font-weight:600; color:var(--muted); margin-bottom:8px}
+.narrative p{margin:0; font-size:15px; line-height:1.6}
+
+/* --- sector & industry performance --- */
+.perf-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start}
+table.perf{width:100%; border-collapse:collapse}
+table.perf th{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.08em;
+  font-size:10.5px; font-weight:600; color:var(--muted2); text-align:right;
+  padding:4px 10px 7px; border-bottom:1px solid var(--line); cursor:pointer;
+  user-select:none; white-space:nowrap}
+table.perf th.pname{text-align:left; padding-left:14px}
+table.perf th:hover,table.perf th:focus-visible{color:var(--text); outline:none}
+table.perf th[data-dir="desc"]::after{content:" \25BC"; font-size:8px}
+table.perf th[data-dir="asc"]::after{content:" \25B2"; font-size:8px}
+table.perf td{padding:6px 10px; border-top:1px solid var(--line-soft); font-size:13px}
+table.perf td.pname{padding-left:14px; color:var(--text)}
+.ptk{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--muted2); margin-left:3px}
+td.pv{font-family:"IBM Plex Mono",monospace; text-align:right; font-variant-numeric:tabular-nums;
+  white-space:nowrap; color:var(--text); width:68px}
+td.pv.na{color:var(--muted2)}
+tbody.pin td{border-top:0; border-bottom:1px solid var(--line); font-weight:500}
+tbody.sortable tr:first-child td{border-top:0}
+.perf-note{margin-top:12px; font-size:12px; line-height:1.55; color:var(--muted2)}
+.flow-tag{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  font-weight:600; letter-spacing:.02em; padding:1px 5px; border-radius:4px; cursor:help;
+  vertical-align:1px}
+.flow-tag.in{color:var(--green); background:rgba(61,214,140,.12); border:1px solid rgba(61,214,140,.35)}
+.flow-tag.out{color:var(--red); background:rgba(240,85,74,.12); border:1px solid rgba(240,85,74,.35)}
+@media (max-width:760px){.perf-grid{grid-template-columns:1fr}}
+
+/* --- rates & treasuries (panel 02) --- */
+.scen{background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line);
+  border-left:4px solid var(--amber); border-radius:14px; padding:18px 22px; margin-bottom:16px}
+.scen-green{border-left-color:var(--green)} .scen-red{border-left-color:var(--red)}
+.scen-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px}
+.scen-head .pill{margin-bottom:0}
+.scen-count{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted2)}
+.scen-count b{color:var(--text)}
+.scen h2{font-size:19px; font-weight:600; line-height:1.3; margin:4px 0 12px}
+.scen .reasons li.sig-esc{color:var(--red); border-color:rgba(240,85,74,.35)}
+.scen .reasons li.sig-de{color:var(--green); border-color:rgba(61,214,140,.35)}
+.scen-read{margin-top:14px; padding-top:12px; border-top:1px solid var(--line-soft)}
+.scen-read .cap{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.1em;
+  font-size:11px; font-weight:600; color:var(--muted); margin-bottom:6px}
+.scen-read p{margin:0; font-size:15px; line-height:1.6}
+.rates-top{display:grid; grid-template-columns:1fr 1.1fr; gap:16px; align-items:start}
+table.curve,table.auct{width:100%; border-collapse:collapse}
+table.curve th,table.auct th{font-family:"Archivo",sans-serif; text-transform:uppercase;
+  letter-spacing:.08em; font-size:10.5px; font-weight:600; color:var(--muted2); text-align:right;
+  padding:4px 12px 7px; border-bottom:1px solid var(--line); white-space:nowrap}
+table.curve th.tn,table.auct th.tn{text-align:left; padding-left:14px}
+table.curve td,table.auct td{padding:6px 10px; border-top:1px solid var(--line-soft); font-size:13.5px;
+  font-family:"IBM Plex Mono",monospace; text-align:right; font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+table.curve tbody tr:first-child td,table.auct tbody tr:first-child td{border-top:0}
+td.tn{text-align:left !important; padding-left:14px !important; font-family:"IBM Plex Sans",sans-serif !important;
+  color:var(--text)}
+td.yl{color:var(--text); font-weight:500}
+td.bpc{color:var(--muted)} td.bpc.big{color:var(--amber); font-weight:600} td.bpc.na{color:var(--muted2)}
+td.dt{color:var(--muted)} td.nm{color:var(--text)}
+td.rd{font-family:"IBM Plex Sans",sans-serif !important; font-size:12.5px}
+td.rd.tone-calm{color:var(--muted)} td.rd.tone-watch{color:var(--amber)} td.rd.tone-stress{color:var(--red)}
+.avg{display:block; font-size:10.5px; color:var(--muted2)}
+.rates-foot{font-size:11.5px; color:var(--muted2); padding:8px 14px 12px}
+.mkt-card .cap .lg{margin-left:12px; text-transform:none; letter-spacing:0; font-family:"IBM Plex Mono",monospace;
+  font-weight:400; color:var(--muted)}
+.lg i{display:inline-block; width:16px; height:0; vertical-align:3px; margin-right:5px}
+.lg .sw-t{border-top:2.5px solid var(--accent)} .lg .sw-m{border-top:2px dashed var(--muted2)}
+.curve-wrap{padding:2px 8px 0}
+.curve-svg{width:100%; height:auto; display:block}
+.cv-grid{stroke:var(--line-soft); stroke-width:1}
+.cv-ax{fill:var(--muted2); font-family:"IBM Plex Mono",monospace; font-size:11px}
+.cv-line-t{fill:none; stroke:var(--accent); stroke-width:2.5; stroke-linejoin:round}
+.cv-line-m{fill:none; stroke:var(--muted2); stroke-width:2; stroke-dasharray:5 4}
+.cv-dot-t{fill:var(--accent); stroke:var(--panel); stroke-width:2}
+.cv-dot-m{fill:var(--muted2); stroke:var(--panel); stroke-width:2}
+.cv-lab-t{fill:var(--text); font-family:"IBM Plex Mono",monospace; font-size:11px}
+.cv-lab-m{fill:var(--muted2); font-family:"IBM Plex Mono",monospace; font-size:11px}
+.cv-hit{fill:transparent; cursor:crosshair}
+.cv-hit:hover{fill:rgba(127,198,220,.07)}
+.slopes{display:flex; gap:8px; flex-wrap:wrap; padding:10px 14px 14px; border-top:1px solid var(--line-soft)}
+.slope{flex:1 1 120px; background:var(--panel2); border:1px solid var(--line-soft); border-radius:8px;
+  padding:7px 10px; display:flex; flex-direction:column}
+.slope .sl{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.08em;
+  font-size:10.5px; font-weight:600; color:var(--muted)}
+.slope .sv{font-family:"IBM Plex Mono",monospace; font-size:16px; color:var(--text)}
+.slope .sc{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted2)}
+.rates-long{display:grid; grid-template-columns:minmax(200px,1fr) 2.6fr; gap:16px; align-items:start}
+.cb-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px}
+.cb{background:var(--panel); border:1px solid var(--line-soft); border-radius:10px; padding:11px 13px}
+.cb.tone-watch{border-color:rgba(245,184,65,.55)}
+.cb-days{font-family:"IBM Plex Mono",monospace; font-size:21px; font-weight:500; color:var(--text)}
+.cb.tone-watch .cb-days{color:var(--amber)}
+.cb-bank{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:11px;
+  font-weight:600; color:var(--accent); margin-top:2px}
+.cb-lbl{font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.4}
+.rates-empty,.rates-note{font-size:12.5px; color:var(--muted2); margin:10px 14px}
+.rates-note{margin:10px 0 0}
+@media (max-width:760px){
+  .rates-top,.rates-long{grid-template-columns:1fr}
+  table.auct th,table.auct td{padding-left:7px; padding-right:7px}
+  table.curve th,table.curve td{padding-left:5px; padding-right:5px; font-size:12.5px}
+  table.curve th{white-space:normal; font-size:9.5px; letter-spacing:.04em}
+  table.curve td.tn,table.curve th.tn{padding-left:10px !important}
+}
+.auct-wrap{overflow-x:auto}
+.rates-top > *,.rates-long > *{min-width:0}
+.radar > *{min-width:0}
+.cal-block{overflow-x:auto}
+
+/* --- radar: calendars + news --- */
+.radar{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start}
+.cal-block,.news-col{background:var(--panel); border:1px solid var(--line-soft); border-radius:10px; padding:14px 16px}
+.cal-block{margin-bottom:16px}
+.cal-head,.theme-head{font-family:"Archivo",sans-serif; text-transform:uppercase;
+  letter-spacing:.1em; font-size:11px; font-weight:600; color:var(--muted); margin-bottom:10px}
+.tag-news{font-family:"IBM Plex Mono",monospace; text-transform:none; letter-spacing:0;
+  font-size:11px; color:var(--muted2); border:1px solid var(--line); border-radius:4px;
+  padding:1px 5px; margin-left:6px}
+table.cal{width:100%; border-collapse:collapse}
+table.cal th{font-family:"Archivo",sans-serif; text-transform:uppercase; letter-spacing:.06em;
+  font-size:11px; font-weight:600; color:var(--muted2); text-align:left; padding:0 8px 6px 0; border-bottom:1px solid var(--line)}
+table.cal td{padding:7px 8px 7px 0; border-bottom:1px solid var(--line-soft); font-size:13px; vertical-align:top}
+.c-when{font-family:"IBM Plex Mono",monospace; color:var(--muted); white-space:nowrap}
+.c-sym{font-family:"IBM Plex Mono",monospace; color:var(--text); font-weight:500}
+.c-evt{color:var(--text)}
+.c-num{font-family:"IBM Plex Mono",monospace; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+.c-num.muted,.muted{color:var(--muted2)}
+.hl-list{list-style:none; margin:0; padding:0}
+.hl-list li{padding:9px 0; border-bottom:1px solid var(--line-soft)}
+.hl-list li:last-child{border-bottom:0}
+.hl-list li.empty{color:var(--muted2); font-style:italic; border-bottom:0}
+.hl{display:block; font-size:13.5px; line-height:1.45}
+.meta{display:block; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted2); margin-top:3px}
+.news-col .news-theme + .news-theme{margin-top:16px; padding-top:14px; border-top:1px solid var(--line)}
+
+/* --- defined terms (hover tooltip on metric labels) --- */
+abbr.defined{text-decoration:none; border-bottom:1px dotted var(--muted2); cursor:help}
+
+/* --- glossary / indicator reference --- */
+.glossary{display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start}
+.gloss{background:var(--panel); border:1px solid var(--line-soft); border-radius:10px;
+  padding:14px 16px}
+.gloss-panel{border-left:3px solid var(--accent)}
+.gloss-term{font-family:"IBM Plex Mono",monospace; font-size:14px; font-weight:600;
+  color:var(--text); margin-bottom:8px}
+.gloss-body p{margin:0 0 8px; font-size:13px; line-height:1.55; color:var(--muted)}
+.gloss-body p:last-child{margin-bottom:0}
+.g-what{color:var(--muted)}
+.g-read{color:var(--text)}
+.g-score{color:var(--muted2); font-size:12.5px}
+.g-tag{display:block; font-family:"Archivo",sans-serif; text-transform:uppercase;
+  letter-spacing:.09em; font-size:10px; font-weight:600; color:var(--muted2);
+  margin-bottom:3px}
+@media (max-width:760px){.glossary{grid-template-columns:1fr}}
+
+/* --- footer --- */
+.foot{margin-top:40px; padding-top:16px; border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted2); line-height:1.7}
+.foot b{color:var(--muted)}
+
+/* --- responsive --- */
+@media (max-width:760px){
+  .overnight,.radar{grid-template-columns:1fr}
+  .hero{flex-direction:row}
+  .verdict h1{font-size:21px}
+}
+@media (max-width:440px){
+  .hero{flex-direction:column; align-items:center; text-align:center}
+  .pill,.reasons{align-self:center; justify-content:center}
+}
+
+/* --- motion: active lamp breathes; disabled when reduced-motion --- */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.82}}
+.andon-green g[opacity="1"],.andon-amber g[opacity="1"],.andon-red g[opacity="1"]{
+  animation:pulse 2.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){
+  .andon g{animation:none !important}
+}
+
+/* --- print / PDF --- */
+@media print{
+  body{background:#fff; color:#111}
+  .hero,.cell,.mkt-card,.narrative,.cal-block,.news-col,.gloss{break-inside:avoid}
+  td.pv{color:#111 !important}
+}
+</style>
+
+<meta name="robots" content="noindex, nofollow">
+<meta name="brief-generated" content="2026-10-13T04:44:35+00:00">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Brief">
+<meta name="theme-color" content="#12161C">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<style>
+/* --- phone/iPad additions (publish_brief.py) --- */
+.pb-stale{position:sticky; top:0; z-index:50; margin:0 0 14px; padding:10px 14px;
+  background:#3A2C0E; border:1px solid var(--amber,#F5B841); border-radius:10px;
+  color:#FBE3B0; font-size:13.5px; line-height:1.45}
+.pb-stale b{color:var(--amber,#F5B841)}
+.pb-tip{position:fixed; z-index:100; max-width:min(340px, calc(100vw - 32px));
+  padding:10px 12px; background:#232A35; color:var(--text,#EFEEE9);
+  border:1px solid var(--line,#29313D); border-radius:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,.45); font-size:13.5px; line-height:1.45}
+[data-tip]{cursor:help}
+@media (hover:none){
+  abbr.defined{border-bottom-style:dashed}
+  .wrap{padding-left:16px; padding-right:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand">CSP <span class="tick">/</span> Morning Brief</div>
+    <div class="stamp"><span class="d">Monday, October 12, 2026</span><br>generated 11:44 PM CDT · pre-open</div>
+  </header>
+
+  <section class="hero">
+    <div class="andon-wrap"><svg viewBox="0 0 116 226" xmlns="http://www.w3.org/2000/svg"
+        class="andon andon-amber" role="img" aria-label="Regime: amber">
+      <defs>
+        <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="6.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <rect x="18" y="12" width="80" height="180" rx="16" fill="#0E1218" stroke="#2C333E" stroke-width="1.5"/>
+      <rect x="50" y="190" width="16" height="22" fill="#252C36"/>
+      <rect x="28" y="208" width="60" height="12" rx="4" fill="#2C333E"/>
+      <g><rect x="26" y="22" width="64" height="48" rx="11" fill="#F0554A" fill-opacity="0.14" stroke="#F0554A" stroke-opacity="0.42" stroke-width="1.25"/></g><g><rect x="26" y="78" width="64" height="48" rx="11" fill="#F5B841" stroke="#F5B841" stroke-width="1.5" filter="url(#glow)"/><ellipse cx="46" cy="92" rx="13" ry="6" fill="#FFFFFF" opacity="0.32"/></g><g><rect x="26" y="134" width="64" height="48" rx="11" fill="#3DD68C" fill-opacity="0.14" stroke="#3DD68C" stroke-opacity="0.42" stroke-width="1.25"/></g>
+    </svg></div>
+    <div class="verdict">
+      <span class="pill amber">Today's signal · amber</span>
+      <h1>Mixed signals — sell options selectively and trade smaller</h1>
+      <ul class="reasons"><li>fear gauge in its normal range (VIX 15.2)</li><li>bond market getting jumpy (MOVE 98)</li><li>inflation at 3.7%, rising again</li></ul>
+      <div class="score">stress score <b>3</b> out of 10 &nbsp;·&nbsp; lower means calmer markets</div>
+    </div>
+  </section>
+
+  <div class="eyebrow"><span class="n">01</span> Should I sell options today? — the key risk gauges</div>
+  <div class="grid"><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="VIX — The stock market&#x27;s &#x27;fear gauge.&#x27; It shows how much traders expect the S&amp;P 500 to move, up or down, over the next month, based on what they&#x27;re paying for options right now. It doesn&#x27;t say which direction, only how big the swings are expected to be.">VIX</abbr></div>
+      <div class="cell-value">15.2</div>
+      <div class="cell-foot"><span class="cell-sub">stock-market fear gauge</span><span class="chg up">+2.49%</span></div>
+      <div class="cell-interp tone-calm">Normal. This is the usual, comfortable range for selling puts.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="VIX vs 3-month — This month&#x27;s fear gauge (VIX) divided by the same gauge measured over three months (VIX3M). Normally the three-month number is a little higher, because the further ahead you look, the less certain things are, so the ratio usually sits below 1.00.">VIX vs 3-month</abbr></div>
+      <div class="cell-value">0.85</div>
+      <div class="cell-foot"><span class="cell-sub">this month ÷ next 3 months</span><span class="chg flat">—</span></div>
+      <div class="cell-interp tone-calm">Normal. Traders are calmer about the next month than about the next three.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="MOVE — The bond market&#x27;s fear gauge: how much traders expect US government interest rates to swing over the next month.">MOVE</abbr></div>
+      <div class="cell-value">98</div>
+      <div class="cell-foot"><span class="cell-sub">bond-market fear gauge</span><span class="chg down">-2.21%</span></div>
+      <div class="cell-interp tone-watch">The bond market is jumpy. When interest rates swing, stocks often follow.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="10-year rate — The interest rate the US government pays to borrow money for 10 years. It&#x27;s the most-watched interest rate in the world, and mortgage rates and company borrowing costs follow it.">10-year rate</abbr></div>
+      <div class="cell-value">5.24%</div>
+      <div class="cell-foot"><span class="cell-sub">US government</span><span class="chg flat">—</span></div>
+      <div class="cell-interp tone-calm">What the government pays to borrow for 10 years. When it jumps, shares of fast-growing companies like tech usually fall, because their future profits are worth less today.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Yield curve — The 10-year government interest rate minus the 2-year rate, in percentage points. Lending for 10 years normally pays more than lending for 2, so this is usually positive. The 2-year rate comes from the Federal Reserve&#x27;s free FRED database; if that doesn&#x27;t load, the 5-year rate is used instead and the tile says so.">Yield curve</abbr></div>
+      <div class="cell-value">0.49</div>
+      <div class="cell-foot"><span class="cell-sub">10-yr minus 2-yr, pts</span><span class="chg flat">—</span></div>
+      <div class="cell-interp tone-watch">Nearly flat: long-term rates are only a little above short-term rates. Common late in an economic expansion; not alarming on its own.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Inflation (CPI) — How much prices overall have risen over the past 12 months, measured by the government&#x27;s Consumer Price Index. It&#x27;s the number the Federal Reserve watches most closely. It only updates once a month.">Inflation (CPI)</abbr></div>
+      <div class="cell-value">3.7%</div>
+      <div class="cell-foot"><span class="cell-sub">past 12 months · change vs last month</span><span class="chg up">+0.17%</span></div>
+      <div class="cell-interp tone-stress">Well above the Fed&#x27;s 2% goal, and it&#x27;s rising again. Makes more rate hikes more likely.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Junk bonds (HYG) — A fund that holds bonds from riskier, lower-rated companies (often called junk bonds). Its price change over the last five days is used as a quick read on whether lenders are getting nervous.">Junk bonds (HYG)</abbr></div>
+      <div class="cell-value">77.29</div>
+      <div class="cell-foot"><span class="cell-sub">fund price, $</span><span class="chg up">+0.08%</span></div>
+      <div class="cell-interp tone-calm">Steady. Lenders aren&#x27;t showing any worry.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="US dollar — The US Dollar Index (DXY): the dollar&#x27;s value against a basket of major currencies, mostly the euro.">US dollar</abbr></div>
+      <div class="cell-value">102.44</div>
+      <div class="cell-foot"><span class="cell-sub">index vs major currencies</span><span class="chg down">-0.14%</span></div>
+      <div class="cell-interp tone-calm">Little changed today.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Oil (WTI) — The price of US crude oil, in dollars per barrel.">Oil (WTI)</abbr></div>
+      <div class="cell-value">92.58</div>
+      <div class="cell-foot"><span class="cell-sub">US crude, $ per barrel</span><span class="chg down">-1.24%</span></div>
+      <div class="cell-interp tone-calm">Ordinary daily move.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Oil (Brent) — The price of international crude oil (the kind shipped by sea), in dollars per barrel. It&#x27;s the oil price most affected by the Middle East.">Oil (Brent)</abbr></div>
+      <div class="cell-value">105.45</div>
+      <div class="cell-foot"><span class="cell-sub">global crude, $ per barrel</span><span class="chg down">-1.13%</span></div>
+      <div class="cell-interp tone-calm">Ordinary daily move.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Gold — The price of gold, in dollars per ounce.">Gold</abbr></div>
+      <div class="cell-value">4,216</div>
+      <div class="cell-foot"><span class="cell-sub">$ per ounce</span><span class="chg up">+0.61%</span></div>
+      <div class="cell-interp tone-calm">Steady today.</div>
+    </div></div>
+
+  <div class="eyebrow eyebrow-sub">Slower-moving background — the Fed's rate and how expensive stocks are</div>
+  <div class="grid"><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Fed&#x27;s key rate — The interest rate the Federal Reserve sets for overnight lending between banks: the Fed&#x27;s main tool for speeding up or slowing down the economy. Shown as the Fed&#x27;s official target range, straight from the Fed&#x27;s own data.">Fed&#x27;s key rate</abbr></div>
+      <div class="cell-value">3.75–4.00%</div>
+      <div class="cell-foot"><span class="cell-sub">target range · from the Fed, daily</span><span class="chg flat">—</span></div>
+      <div class="cell-interp tone-watch">The Fed&#x27;s target is 3.75–4.00%. Panel 02 shows how many more rate hikes the market expects from here.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Stocks vs economy — Often called the Buffett Indicator: the total value of the US stock market divided by the size of the whole economy (GDP). Calculated from two free Federal Reserve data series.">Stocks vs economy</abbr></div>
+      <div class="cell-value">255%</div>
+      <div class="cell-foot"><span class="cell-sub">stock market value ÷ GDP · quarterly</span><span class="chg flat">—</span></div>
+      <div class="cell-interp tone-stress">At 255%, stocks are near a record high compared with the size of the economy. Readings this high have raised the odds of a pullback in the past, though they&#x27;re poor at timing one.</div>
+    </div></div>
+
+  <div class="eyebrow"><span class="n">02</span> Interest rates &amp; Treasuries — what the bond market is saying</div>
+  <section class="scen scen-amber">
+      <div class="scen-head"><span class="pill amber">Scenario · Base</span>
+        <span class="scen-count">signals pointing worse <b>1</b> · pointing better <b>0</b>
+        · it takes 3 on one side to switch</span></div>
+      <h2>Base case — oil stays high, the Fed raises rates once more and then pauses, long-term rates stay high</h2>
+      <ul class="reasons"><li class="sig-esc">▲ oil at $105, above $105</li></ul>
+      <div class="scen-read"><div class="cap">In plain English</div><p>The government&#x27;s 10-year borrowing rate is 5.24%, down 0.04 points this week. Long-term rates are 0.44 points above 2-year rates, a gap that widened by 0.04 over the past month. Treasury bill prices suggest about 2.4 more quarter-point rate hikes from the Fed over the next year. Oil (Brent) is $105 a barrel, up 4.8 percent over five trading days. The inflation investors expect in the long run is 2.32% (down 0.01 points in a month), so investors still see the oil shock as temporary. The extra pay investors demand to lend for 10 years is 1.08%, up 0.19 points in a month; demand was weak at the latest 5-year note and 20-year bond auctions. A 1-year Treasury bill pays 4.47%, versus 3.33% on your SPAXX money market: about $1,140 more a year for every $100,000.</p></div>
+    </section>
+    <div class="rates-top">
+      <div class="mkt-card"><div class="cap">What the US government pays to borrow · Oct 9 close · official Treasury figures</div>
+        <table class="curve"><thead><tr><th class="tn">Borrowing for</th><th>Rate</th><th title="Change since the previous day, in percentage points">1 day</th><th title="Change since about a week ago, in percentage points">1 week</th><th title="Change since about a month ago, in percentage points">1 month</th></tr></thead><tbody><tr><td class="tn">1 month</td><td class="yl">4.13%</td><td class="bpc">-0.01</td><td class="bpc">+0.09</td><td class="bpc big">+0.32</td></tr><tr><td class="tn">3 months</td><td class="yl">4.25%</td><td class="bpc">+0.02</td><td class="bpc">+0.06</td><td class="bpc">+0.30</td></tr><tr><td class="tn">6 months</td><td class="yl">4.32%</td><td class="bpc">+0.02</td><td class="bpc">+0.05</td><td class="bpc big">+0.31</td></tr><tr><td class="tn">1 year</td><td class="yl">4.47%</td><td class="bpc">+0.03</td><td class="bpc">+0.01</td><td class="bpc">+0.30</td></tr><tr><td class="tn">2 years</td><td class="yl">4.80%</td><td class="bpc">+0.05</td><td class="bpc">-0.03</td><td class="bpc big">+0.37</td></tr><tr><td class="tn">5 years</td><td class="yl">5.02%</td><td class="bpc">+0.03</td><td class="bpc">-0.04</td><td class="bpc big">+0.41</td></tr><tr><td class="tn">10 years</td><td class="yl">5.24%</td><td class="bpc">+0.02</td><td class="bpc">-0.04</td><td class="bpc big">+0.41</td></tr><tr><td class="tn">30 years</td><td class="yl">5.60%</td><td class="bpc">+0.00</td><td class="bpc">-0.03</td><td class="bpc big">+0.32</td></tr></tbody></table>
+        <div class="rates-foot">The last three columns show how much each rate changed over that period, in percentage points (4.50% → 4.75% is +0.25). Amber marks an unusually big move.</div></div>
+      <div class="mkt-card"><div class="cap">Today vs a month ago
+        <span class="lg"><i class="sw-t"></i>today</span><span class="lg"><i class="sw-m"></i>Sep 9</span></div>
+        <div class="curve-wrap"><svg viewBox="0 0 540 220" class="curve-svg" role="img" aria-label="US government interest rates today versus one month ago"><line x1="44" x2="486" y1="190.0" y2="190.0" class="cv-grid"/><text x="36" y="194.0" class="cv-ax" text-anchor="end">3.75%</text><line x1="44" x2="486" y1="168.0" y2="168.0" class="cv-grid"/><text x="36" y="172.0" class="cv-ax" text-anchor="end">4.00%</text><line x1="44" x2="486" y1="146.0" y2="146.0" class="cv-grid"/><text x="36" y="150.0" class="cv-ax" text-anchor="end">4.25%</text><line x1="44" x2="486" y1="124.0" y2="124.0" class="cv-grid"/><text x="36" y="128.0" class="cv-ax" text-anchor="end">4.50%</text><line x1="44" x2="486" y1="102.0" y2="102.0" class="cv-grid"/><text x="36" y="106.0" class="cv-ax" text-anchor="end">4.75%</text><line x1="44" x2="486" y1="80.0" y2="80.0" class="cv-grid"/><text x="36" y="84.0" class="cv-ax" text-anchor="end">5.00%</text><line x1="44" x2="486" y1="58.0" y2="58.0" class="cv-grid"/><text x="36" y="62.0" class="cv-ax" text-anchor="end">5.25%</text><line x1="44" x2="486" y1="36.0" y2="36.0" class="cv-grid"/><text x="36" y="40.0" class="cv-ax" text-anchor="end">5.50%</text><line x1="44" x2="486" y1="14.0" y2="14.0" class="cv-grid"/><text x="36" y="18.0" class="cv-ax" text-anchor="end">5.75%</text><text x="44.0" y="211" class="cv-ax" text-anchor="middle">1M</text><text x="106.0" y="211" class="cv-ax" text-anchor="middle">3M</text><text x="168.0" y="211" class="cv-ax" text-anchor="middle">6M</text><text x="230.0" y="211" class="cv-ax" text-anchor="middle">1Y</text><text x="292.0" y="211" class="cv-ax" text-anchor="middle">2Y</text><text x="354.0" y="211" class="cv-ax" text-anchor="middle">5Y</text><text x="416.0" y="211" class="cv-ax" text-anchor="middle">10Y</text><text x="478.0" y="211" class="cv-ax" text-anchor="middle">30Y</text><path d="M44.0,184.7 L106.0,172.4 L168.0,167.1 L230.0,153.0 L292.0,130.2 L354.0,114.3 L416.0,95.0 L478.0,55.4" class="cv-line-m"/><path d="M44.0,156.6 L106.0,146.0 L168.0,139.8 L230.0,126.6 L292.0,97.6 L354.0,78.2 L416.0,58.9 L478.0,27.2" class="cv-line-t"/><circle cx="44.0" cy="184.7" r="3" class="cv-dot-m"/><circle cx="106.0" cy="172.4" r="3" class="cv-dot-m"/><circle cx="168.0" cy="167.1" r="3" class="cv-dot-m"/><circle cx="230.0" cy="153.0" r="3" class="cv-dot-m"/><circle cx="292.0" cy="130.2" r="3" class="cv-dot-m"/><circle cx="354.0" cy="114.3" r="3" class="cv-dot-m"/><circle cx="416.0" cy="95.0" r="3" class="cv-dot-m"/><circle cx="478.0" cy="55.4" r="3" class="cv-dot-m"/><circle cx="44.0" cy="156.6" r="4" class="cv-dot-t"/><circle cx="106.0" cy="146.0" r="4" class="cv-dot-t"/><circle cx="168.0" cy="139.8" r="4" class="cv-dot-t"/><circle cx="230.0" cy="126.6" r="4" class="cv-dot-t"/><circle cx="292.0" cy="97.6" r="4" class="cv-dot-t"/><circle cx="354.0" cy="78.2" r="4" class="cv-dot-t"/><circle cx="416.0" cy="58.9" r="4" class="cv-dot-t"/><circle cx="478.0" cy="27.2" r="4" class="cv-dot-t"/><text x="488.0" y="31.2" class="cv-lab-t">today</text><text x="488.0" y="59.4" class="cv-lab-m">1 mo ago</text><rect x="13.0" y="14" width="62.0" height="176" class="cv-hit"><title>1 month: 4.13% today · 3.81% on Sep 9 · up 0.32 points</title></rect><rect x="75.0" y="14" width="62.0" height="176" class="cv-hit"><title>3 months: 4.25% today · 3.95% on Sep 9 · up 0.30 points</title></rect><rect x="137.0" y="14" width="62.0" height="176" class="cv-hit"><title>6 months: 4.32% today · 4.01% on Sep 9 · up 0.31 points</title></rect><rect x="199.0" y="14" width="62.0" height="176" class="cv-hit"><title>1 year: 4.47% today · 4.17% on Sep 9 · up 0.30 points</title></rect><rect x="261.0" y="14" width="62.0" height="176" class="cv-hit"><title>2 years: 4.80% today · 4.43% on Sep 9 · up 0.37 points</title></rect><rect x="323.0" y="14" width="62.0" height="176" class="cv-hit"><title>5 years: 5.02% today · 4.61% on Sep 9 · up 0.41 points</title></rect><rect x="385.0" y="14" width="62.0" height="176" class="cv-hit"><title>10 years: 5.24% today · 4.83% on Sep 9 · up 0.41 points</title></rect><rect x="447.0" y="14" width="62.0" height="176" class="cv-hit"><title>30 years: 5.60% today · 5.28% on Sep 9 · up 0.32 points</title></rect></svg></div>
+        <div class="slopes"><div class="slope"><span class="sl">10-yr minus 3-mo</span><span class="sv">+0.99 pts</span><span class="sc">+0.11 pts in a month</span></div><div class="slope"><span class="sl">10-yr minus 2-yr</span><span class="sv">+0.44 pts</span><span class="sc">+0.04 pts in a month</span></div><div class="slope"><span class="sl">30-yr minus 5-yr</span><span class="sv">+0.58 pts</span><span class="sc">-0.09 pts in a month</span></div></div></div>
+    </div>
+    <div class="eyebrow eyebrow-sub">What the market expects the Fed to do</div>
+    <div class="grid"><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Fed hikes expected — How many more quarter-point rate hikes (or cuts) the market expects from the Fed over the next 12 months. It&#x27;s worked out from the 1-year Treasury bill: that bill&#x27;s rate is roughly the average interest rate investors expect over the coming year, so the gap between it and the Fed&#x27;s current rate shows how far they expect the Fed to move. Every 0.25 points of gap is about one quarter-point hike.">Fed hikes expected</abbr></div>
+      <div class="cell-value">2.4 hikes</div>
+      <div class="cell-foot"><span class="cell-sub">quarter-point moves, next 12 months · Fed&#x27;s rate 3.88%</span><span class="chg flat">+0.0 vs last week</span></div>
+      <div class="cell-interp tone-watch">The 1-year bill pays 4.47%, 0.59 points above the Fed&#x27;s current rate. That gap is what these expected hikes add up to.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Rate expected in 6–12 mo — The short-term interest rate the market expects for the period six to twelve months from now. It&#x27;s worked out from today&#x27;s 6-month and 1-year bill rates: if the 1-year bill pays more than the 6-month bill, investors must expect rates to be higher in the second half of the year.">Rate expected in 6–12 mo</abbr></div>
+      <div class="cell-value">4.62%</div>
+      <div class="cell-foot"><span class="cell-sub">from the 6-month and 1-year bills</span><span class="chg flat">-0.03 pts this week</span></div>
+      <div class="cell-interp tone-watch">About 3.0 quarter-point steps above the Fed&#x27;s rate today.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="1-yr rate a year out — The 1-year interest rate the market expects a year from today, worked out from today&#x27;s 1-year and 2-year rates.">1-yr rate a year out</abbr></div>
+      <div class="cell-value">5.13%</div>
+      <div class="cell-foot"><span class="cell-sub">from the 1-year and 2-year rates</span><span class="chg flat">-0.07 pts this week</span></div>
+      <div class="cell-interp tone-calm">A 2-year note beats buying two 1-year bills in a row only if 1-year rates a year from now end up below 5.13%.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Bill vs your cash — The 1-year Treasury bill rate minus what your money-market fund pays. The money-market rate is typed in by hand (CASH_BENCHMARK at the top of the script), because no free source publishes it.">Bill vs your cash</abbr></div>
+      <div class="cell-value">+1.14 pts</div>
+      <div class="cell-foot"><span class="cell-sub">1-yr bill 4.47% vs SPAXX money market 3.33% (typed in)</span><span class="chg flat">—</span></div>
+      <div class="cell-interp tone-calm">About $1,140 more a year for every $100,000, locked in for a year.</div>
+    </div></div>
+    <div class="eyebrow eyebrow-sub">Is the oil shock turning into lasting inflation?</div>
+    <div class="grid"><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Oil (Brent) — The price of international crude oil (the kind shipped by sea), in dollars per barrel. It&#x27;s the oil price most affected by the Middle East.">Oil (Brent)</abbr></div>
+      <div class="cell-value">$105.43</div>
+      <div class="cell-foot"><span class="cell-sub">$ per barrel · change over 5 trading days</span><span class="chg up">+4.82%</span></div>
+      <div class="cell-interp tone-watch">Over the past month: +0.8%.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Gasoline — Wholesale gasoline futures, in dollars per gallon. Not the pump price, but pump prices follow it within a few weeks.">Gasoline</abbr></div>
+      <div class="cell-value">$3.13</div>
+      <div class="cell-foot"><span class="cell-sub">wholesale $ per gallon · 5 trading days</span><span class="chg down">-4.35%</span></div>
+      <div class="cell-interp tone-calm">Over the past month: -5.3%.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Inflation expected, 5 yrs — The average yearly inflation investors expect over the next five years. It&#x27;s the gap between the regular 5-year Treasury rate and the rate on the 5-year inflation-protected Treasury (TIPS). From the Fed&#x27;s FRED data, series T5YIE.">Inflation expected, 5 yrs</abbr></div>
+      <div class="cell-value">2.34%</div>
+      <div class="cell-foot"><span class="cell-sub">yearly average · as of Oct 9</span><span class="chg flat">-0.03 pts this week</span></div>
+      <div class="cell-interp tone-calm">Over the past month: -0.07 pts.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Inflation expected, 10 yrs — The same measure over ten years (FRED series T10YIE).">Inflation expected, 10 yrs</abbr></div>
+      <div class="cell-value">2.33%</div>
+      <div class="cell-foot"><span class="cell-sub">yearly average · as of Oct 9</span><span class="chg flat">-0.03 pts this week</span></div>
+      <div class="cell-interp tone-calm">Over the past month: -0.04 pts.</div>
+    </div><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Long-run inflation expected — The yearly inflation investors expect for the five years that start five years from now (FRED series T5YIFR, known as the &#x27;5-year, 5-year forward&#x27;). It deliberately ignores what&#x27;s happening today and asks what inflation will look like once today&#x27;s shock has passed.">Long-run inflation expected</abbr></div>
+      <div class="cell-value">2.32%</div>
+      <div class="cell-foot"><span class="cell-sub">5 to 10 years ahead · as of Oct 9</span><span class="chg flat">-0.01 pts in a month</span></div>
+      <div class="cell-interp tone-calm">Steady. Investors still see the oil shock as temporary.</div>
+    </div></div>
+    <div class="eyebrow eyebrow-sub">Is it getting harder for the government to borrow long-term?</div>
+    <div class="rates-long">
+      <div class="rates-tp"><div class="cell">
+      <div class="cell-label"><abbr class="defined" title="Extra pay to lend long — The extra interest investors demand for lending to the government for 10 years, compared with lending for a few months at a time and rolling it over. Economists call it the term premium. This is the Federal Reserve Board&#x27;s estimate (FRED series THREEFYTP10), which arrives about a week late. News stories often quote the New York Fed&#x27;s estimate instead; it gives a different number but usually moves the same way.">Extra pay to lend long</abbr></div>
+      <div class="cell-value">1.08%</div>
+      <div class="cell-foot"><span class="cell-sub">on 10-year loans · Fed estimate as of Oct 2</span><span class="chg flat">+0.19 pts in a month</span></div>
+      <div class="cell-interp tone-watch">Rising. Investors want more pay to lend for the long term. That&#x27;s about government debt and borrowing, which Fed rate moves won&#x27;t fix.</div>
+    </div></div>
+      <div class="mkt-card"><div class="cap">Latest government debt auctions vs their usual demand</div>
+        <div class="auct-wrap"><table class="auct"><thead><tr><th class="tn">Auction</th><th>Date</th><th title="The interest rate the auction set">Rate set</th><th title="Dollars investors offered for each dollar of debt sold. Underneath: the average of the previous 6 auctions of the same length.">Bids per $1 sold</th><th title="Share the big Wall Street banks had to keep because no one else bought it">Left with dealers</th><th>Verdict</th></tr></thead><tbody><tr><td class="tn">2-year note</td><td class="dt">Sep 22</td><td class="nm">4.787%</td><td class="nm">$2.63<span class="avg">usual $2.60</span></td><td class="nm">13.2%<span class="avg">usual 13.1%</span></td><td class="rd tone-calm">Normal</td></tr><tr><td class="tn">5-year note</td><td class="dt">Sep 23</td><td class="nm">5.033%</td><td class="nm">$2.21<span class="avg">usual $2.33</span></td><td class="nm">15.8%<span class="avg">usual 12.9%</span></td><td class="rd tone-stress">Weak demand</td></tr><tr><td class="tn">7-year note</td><td class="dt">Sep 24</td><td class="nm">5.085%</td><td class="nm">$2.42<span class="avg">usual $2.49</span></td><td class="nm">12.5%<span class="avg">usual 12.1%</span></td><td class="rd tone-calm">Normal</td></tr><tr><td class="tn">10-year note <span class="avg" title="An add-on sale of an existing note or bond">add-on sale</span></td><td class="dt">Oct 7</td><td class="nm">5.300%</td><td class="nm">$2.77<span class="avg">usual $2.54</span></td><td class="nm">2.5%<span class="avg">usual 8.8%</span></td><td class="rd tone-calm">Strong demand</td></tr><tr><td class="tn">20-year bond <span class="avg" title="An add-on sale of an existing note or bond">add-on sale</span></td><td class="dt">Sep 15</td><td class="nm">5.420%</td><td class="nm">$2.57<span class="avg">usual $2.65</span></td><td class="nm">16.9%<span class="avg">usual 10.7%</span></td><td class="rd tone-stress">Weak demand</td></tr><tr><td class="tn">30-year bond <span class="avg" title="An add-on sale of an existing note or bond">add-on sale</span></td><td class="dt">Oct 8</td><td class="nm">5.618%</td><td class="nm">$2.54<span class="avg">usual $2.41</span></td><td class="nm">6.8%<span class="avg">usual 10.3%</span></td><td class="rd tone-calm">Strong demand</td></tr></tbody></table></div></div>
+    </div>
+    <div class="eyebrow eyebrow-sub">Upcoming interest-rate decisions and key dates</div>
+    <div class="cb-row"><div class="cb tone-calm"><div class="cb-days">16 days</div><div class="cb-bank">US Fed</div><div class="cb-lbl">rate decision · Oct 28</div></div><div class="cb tone-calm"><div class="cb-days">17 days</div><div class="cb-bank">Europe (ECB)</div><div class="cb-lbl">rate decision · Oct 29</div></div><div class="cb tone-calm"><div class="cb-days">18 days</div><div class="cb-bank">Japan (BoJ)</div><div class="cb-lbl">rate decision + forecasts · Oct 30</div></div><div class="cb tone-calm"><div class="cb-days">22 days</div><div class="cb-bank">US</div><div class="cb-lbl">midterm elections · Nov 3</div></div><div class="cb tone-calm"><div class="cb-days">24 days</div><div class="cb-bank">UK (BoE)</div><div class="cb-lbl">rate decision + forecasts · Nov 5</div></div><div class="cb tone-calm"><div class="cb-days">58 days</div><div class="cb-bank">US Fed</div><div class="cb-lbl">rate decision + forecasts · Dec 9</div></div></div>
+
+  <div class="eyebrow"><span class="n">03</span> Overnight — what happened while you slept</div>
+  <div class="overnight">
+    <div class="mkt-card">
+      <div class="cap">Stock markets around the world</div>
+      <table class="mkt"><tr><td class="mname">Nikkei 225</td>
+      <td class="mval">67,580</td>
+      <td class="mchg down">-2.10%</td></tr><tr><td class="mname">Hang Seng</td>
+      <td class="mval">24,176</td>
+      <td class="mchg down">-0.39%</td></tr><tr><td class="mname">Shanghai</td>
+      <td class="mval">3,787</td>
+      <td class="mchg down">-0.27%</td></tr><tr><td class="mname">STOXX 600</td>
+      <td class="mval">636</td>
+      <td class="mchg up">+0.65%</td></tr><tr><td class="mname">DAX</td>
+      <td class="mval">25,278</td>
+      <td class="mchg up">+0.76%</td></tr><tr><td class="mname">FTSE 100</td>
+      <td class="mval">10,656</td>
+      <td class="mchg up">+0.99%</td></tr><tr><td class="mname">S&amp;P fut</td>
+      <td class="mval">7,844</td>
+      <td class="mchg down">-0.17%</td></tr><tr><td class="mname">Nasdaq fut</td>
+      <td class="mval">30,663</td>
+      <td class="mchg down">-0.76%</td></tr><tr><td class="mname">Nifty 50</td>
+      <td class="mval">22,558</td>
+      <td class="mchg up">+0.87%</td></tr></table>
+    </div>
+    <div>
+      <div class="mkt-card">
+        <div class="cap">Currencies</div>
+        <table class="mkt"><tr><td class="mname">EUR/USD</td>
+      <td class="mval">1.117</td>
+      <td class="mchg down">-0.34%</td></tr><tr><td class="mname">USD/JPY</td>
+      <td class="mval">158.251</td>
+      <td class="mchg up">+0.12%</td></tr><tr><td class="mname">GBP/USD</td>
+      <td class="mval">1.322</td>
+      <td class="mchg down">-0.09%</td></tr><tr><td class="mname">USD/INR</td>
+      <td class="mval">95.285</td>
+      <td class="mchg down">-1.59%</td></tr></table>
+      </div>
+      <div class="narrative" style="margin-top:16px">
+        <div class="cap">In plain English</div>
+        <p>Overnight, stocks were up in STOXX 600, DAX, FTSE 100, Nifty 50; down in Nikkei 225, Hang Seng, Shanghai, S&amp;P fut.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="eyebrow"><span class="n">04</span> Which parts of the market are leading — this year, 2 years, 3 years</div>
+  <div class="perf-grid">
+      <div class="mkt-card perf-card">
+      <div class="cap">Sectors (tracked with SPDR sector funds)</div>
+      <table class="perf">
+        <thead><tr><th data-k="name" class="pname" tabindex="0" role="button" title="Sort by name">Name</th><th data-k="ytd" tabindex="0" role="button" title="Sort by This yr">This yr</th><th data-k="y2" tabindex="0" role="button" title="Sort by 2 yrs">2 yrs</th><th data-k="y3" tabindex="0" role="button" title="Sort by 3 yrs">3 yrs</th></tr></thead>
+        <tbody class="pin"><tr class="bench"><td class="pname" data-v="s&amp;p 500">S&amp;P 500 <span class="ptk">SPY</span></td><td class="pv" data-v="14.9955" style="background:rgba(61,214,140,0.20)" title="S&amp;P 500 (SPY) · This yr +15.0%">+15.0%</td><td class="pv" data-v="37.3506" style="background:rgba(61,214,140,0.26)" title="S&amp;P 500 (SPY) · 2 yrs +37.4% (about +17.2% a year)">+37.4%</td><td class="pv" data-v="86.0493" style="background:rgba(61,214,140,0.30)" title="S&amp;P 500 (SPY) · 3 yrs +86.0% (about +23.0% a year)">+86.0%</td></tr></tbody>
+        <tbody class="sortable"><tr class=""><td class="pname" data-v="energy">Energy <span class="ptk">XLE</span> <span class="flow-tag in" title="Unusual buying over the past 6 months, compared with the other sectors and industries (score +0.07 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▲ in</span></td><td class="pv" data-v="50.5664" style="background:rgba(61,214,140,0.40)" title="Energy (XLE) · This yr +50.6% · compared with the S&amp;P 500: +35.6 points">+50.6%</td><td class="pv" data-v="51.1700" style="background:rgba(61,214,140,0.34)" title="Energy (XLE) · 2 yrs +51.2% (about +23.0% a year) · compared with the S&amp;P 500: +13.8 points">+51.2%</td><td class="pv" data-v="65.5584" style="background:rgba(61,214,140,0.25)" title="Energy (XLE) · 3 yrs +65.6% (about +18.3% a year) · compared with the S&amp;P 500: -20.5 points">+65.6%</td></tr><tr class=""><td class="pname" data-v="technology">Technology <span class="ptk">XLK</span> <span class="flow-tag in" title="Unusual buying over the past 6 months, compared with the other sectors and industries (score +0.16 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▲ in</span></td><td class="pv" data-v="36.8815" style="background:rgba(61,214,140,0.40)" title="Technology (XLK) · This yr +36.9% · compared with the S&amp;P 500: +21.9 points">+36.9%</td><td class="pv" data-v="72.1076" style="background:rgba(61,214,140,0.40)" title="Technology (XLK) · 2 yrs +72.1% (about +31.2% a year) · compared with the S&amp;P 500: +34.8 points">+72.1%</td><td class="pv" data-v="133.9213" style="background:rgba(61,214,140,0.40)" title="Technology (XLK) · 3 yrs +133.9% (about +32.7% a year) · compared with the S&amp;P 500: +47.9 points">+133.9%</td></tr><tr class=""><td class="pname" data-v="health care">Health Care <span class="ptk">XLV</span></td><td class="pv" data-v="12.4823" style="background:rgba(61,214,140,0.18)" title="Health Care (XLV) · This yr +12.5% · compared with the S&amp;P 500: -2.5 points">+12.5%</td><td class="pv" data-v="15.6588" style="background:rgba(61,214,140,0.15)" title="Health Care (XLV) · 2 yrs +15.7% (about +7.5% a year) · compared with the S&amp;P 500: -21.7 points">+15.7%</td><td class="pv" data-v="39.7471" style="background:rgba(61,214,140,0.18)" title="Health Care (XLV) · 3 yrs +39.7% (about +11.8% a year) · compared with the S&amp;P 500: -46.3 points">+39.7%</td></tr><tr class=""><td class="pname" data-v="consumer staples">Consumer Staples <span class="ptk">XLP</span></td><td class="pv" data-v="10.7573" style="background:rgba(61,214,140,0.17)" title="Consumer Staples (XLP) · This yr +10.8% · compared with the S&amp;P 500: -4.2 points">+10.8%</td><td class="pv" data-v="9.0850" style="background:rgba(61,214,140,0.12)" title="Consumer Staples (XLP) · 2 yrs +9.1% (about +4.4% a year) · compared with the S&amp;P 500: -28.3 points">+9.1%</td><td class="pv" data-v="38.2652" style="background:rgba(61,214,140,0.17)" title="Consumer Staples (XLP) · 3 yrs +38.3% (about +11.4% a year) · compared with the S&amp;P 500: -47.8 points">+38.3%</td></tr><tr class=""><td class="pname" data-v="materials">Materials <span class="ptk">XLB</span></td><td class="pv" data-v="10.4188" style="background:rgba(61,214,140,0.16)" title="Materials (XLB) · This yr +10.4% · compared with the S&amp;P 500: -4.6 points">+10.4%</td><td class="pv" data-v="7.0780" style="background:rgba(61,214,140,0.11)" title="Materials (XLB) · 2 yrs +7.1% (about +3.5% a year) · compared with the S&amp;P 500: -30.3 points">+7.1%</td><td class="pv" data-v="34.3842" style="background:rgba(61,214,140,0.16)" title="Materials (XLB) · 3 yrs +34.4% (about +10.4% a year) · compared with the S&amp;P 500: -51.7 points">+34.4%</td></tr><tr class=""><td class="pname" data-v="industrials">Industrials <span class="ptk">XLI</span></td><td class="pv" data-v="9.9147" style="background:rgba(61,214,140,0.16)" title="Industrials (XLI) · This yr +9.9% · compared with the S&amp;P 500: -5.1 points">+9.9%</td><td class="pv" data-v="25.4965" style="background:rgba(61,214,140,0.20)" title="Industrials (XLI) · 2 yrs +25.5% (about +12.0% a year) · compared with the S&amp;P 500: -11.9 points">+25.5%</td><td class="pv" data-v="71.8052" style="background:rgba(61,214,140,0.26)" title="Industrials (XLI) · 3 yrs +71.8% (about +19.8% a year) · compared with the S&amp;P 500: -14.2 points">+71.8%</td></tr><tr class=""><td class="pname" data-v="real estate">Real Estate <span class="ptk">XLRE</span></td><td class="pv" data-v="6.3938" style="background:rgba(61,214,140,0.13)" title="Real Estate (XLRE) · This yr +6.4% · compared with the S&amp;P 500: -8.6 points">+6.4%</td><td class="pv" data-v="3.3523" style="background:rgba(61,214,140,0.09)" title="Real Estate (XLRE) · 2 yrs +3.4% (about +1.7% a year) · compared with the S&amp;P 500: -34.0 points">+3.4%</td><td class="pv" data-v="35.2536" style="background:rgba(61,214,140,0.17)" title="Real Estate (XLRE) · 3 yrs +35.3% (about +10.6% a year) · compared with the S&amp;P 500: -50.8 points">+35.3%</td></tr><tr class=""><td class="pname" data-v="financials">Financials <span class="ptk">XLF</span></td><td class="pv" data-v="1.7406" style="background:rgba(61,214,140,0.09)" title="Financials (XLF) · This yr +1.7% · compared with the S&amp;P 500: -13.3 points">+1.7%</td><td class="pv" data-v="21.9949" style="background:rgba(61,214,140,0.18)" title="Financials (XLF) · 2 yrs +22.0% (about +10.5% a year) · compared with the S&amp;P 500: -15.4 points">+22.0%</td><td class="pv" data-v="74.0207" style="background:rgba(61,214,140,0.27)" title="Financials (XLF) · 3 yrs +74.0% (about +20.3% a year) · compared with the S&amp;P 500: -12.0 points">+74.0%</td></tr><tr class=""><td class="pname" data-v="utilities">Utilities <span class="ptk">XLU</span></td><td class="pv" data-v="-0.4475" style="background:rgba(240,85,74,0.07)" title="Utilities (XLU) · This yr -0.4% · compared with the S&amp;P 500: -15.4 points">-0.4%</td><td class="pv" data-v="11.2305" style="background:rgba(61,214,140,0.13)" title="Utilities (XLU) · 2 yrs +11.2% (about +5.5% a year) · compared with the S&amp;P 500: -26.1 points">+11.2%</td><td class="pv" data-v="55.2727" style="background:rgba(61,214,140,0.22)" title="Utilities (XLU) · 3 yrs +55.3% (about +15.8% a year) · compared with the S&amp;P 500: -30.8 points">+55.3%</td></tr><tr class=""><td class="pname" data-v="communication services">Communication Services <span class="ptk">XLC</span></td><td class="pv" data-v="-4.4632" style="background:rgba(240,85,74,0.11)" title="Communication Services (XLC) · This yr -4.5% · compared with the S&amp;P 500: -19.5 points">-4.5%</td><td class="pv" data-v="26.2083" style="background:rgba(61,214,140,0.21)" title="Communication Services (XLC) · 2 yrs +26.2% (about +12.3% a year) · compared with the S&amp;P 500: -11.1 points">+26.2%</td><td class="pv" data-v="70.0908" style="background:rgba(61,214,140,0.26)" title="Communication Services (XLC) · 3 yrs +70.1% (about +19.4% a year) · compared with the S&amp;P 500: -16.0 points">+70.1%</td></tr><tr class=""><td class="pname" data-v="consumer discretionary">Consumer Discretionary <span class="ptk">XLY</span></td><td class="pv" data-v="-5.3949" style="background:rgba(240,85,74,0.12)" title="Consumer Discretionary (XLY) · This yr -5.4% · compared with the S&amp;P 500: -20.4 points">-5.4%</td><td class="pv" data-v="16.1474" style="background:rgba(61,214,140,0.15)" title="Consumer Discretionary (XLY) · 2 yrs +16.1% (about +7.8% a year) · compared with the S&amp;P 500: -21.2 points">+16.1%</td><td class="pv" data-v="42.6778" style="background:rgba(61,214,140,0.19)" title="Consumer Discretionary (XLY) · 3 yrs +42.7% (about +12.6% a year) · compared with the S&amp;P 500: -43.4 points">+42.7%</td></tr></tbody>
+      </table></div>
+      <div class="mkt-card perf-card">
+      <div class="cap">Industries (tracked with industry funds)</div>
+      <table class="perf">
+        <thead><tr><th data-k="name" class="pname" tabindex="0" role="button" title="Sort by name">Name</th><th data-k="ytd" tabindex="0" role="button" title="Sort by This yr">This yr</th><th data-k="y2" tabindex="0" role="button" title="Sort by 2 yrs">2 yrs</th><th data-k="y3" tabindex="0" role="button" title="Sort by 3 yrs">3 yrs</th></tr></thead>
+        <tbody class="pin"><tr class="bench"><td class="pname" data-v="s&amp;p 500">S&amp;P 500 <span class="ptk">SPY</span></td><td class="pv" data-v="14.9955" style="background:rgba(61,214,140,0.20)" title="S&amp;P 500 (SPY) · This yr +15.0%">+15.0%</td><td class="pv" data-v="37.3506" style="background:rgba(61,214,140,0.26)" title="S&amp;P 500 (SPY) · 2 yrs +37.4% (about +17.2% a year)">+37.4%</td><td class="pv" data-v="86.0493" style="background:rgba(61,214,140,0.30)" title="S&amp;P 500 (SPY) · 3 yrs +86.0% (about +23.0% a year)">+86.0%</td></tr></tbody>
+        <tbody class="sortable"><tr class=""><td class="pname" data-v="semiconductors">Semiconductors <span class="ptk">SMH</span> <span class="flow-tag in" title="Unusual buying over the past 6 months, compared with the other sectors and industries (score +0.07 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▲ in</span></td><td class="pv" data-v="64.1046" style="background:rgba(61,214,140,0.40)" title="Semiconductors (SMH) · This yr +64.1% · compared with the S&amp;P 500: +49.1 points">+64.1%</td><td class="pv" data-v="131.9749" style="background:rgba(61,214,140,0.40)" title="Semiconductors (SMH) · 2 yrs +132.0% (about +52.3% a year) · compared with the S&amp;P 500: +94.6 points">+132.0%</td><td class="pv" data-v="293.6170" style="background:rgba(61,214,140,0.40)" title="Semiconductors (SMH) · 3 yrs +293.6% (about +57.9% a year) · compared with the S&amp;P 500: +207.6 points">+293.6%</td></tr><tr class=""><td class="pname" data-v="oil &amp; gas e&amp;p">Oil &amp; Gas E&amp;P <span class="ptk">XOP</span></td><td class="pv" data-v="55.8756" style="background:rgba(61,214,140,0.40)" title="Oil &amp; Gas E&amp;P (XOP) · This yr +55.9% · compared with the S&amp;P 500: +40.9 points">+55.9%</td><td class="pv" data-v="44.4024" style="background:rgba(61,214,140,0.30)" title="Oil &amp; Gas E&amp;P (XOP) · 2 yrs +44.4% (about +20.2% a year) · compared with the S&amp;P 500: +7.1 points">+44.4%</td><td class="pv" data-v="43.1710" style="background:rgba(61,214,140,0.19)" title="Oil &amp; Gas E&amp;P (XOP) · 3 yrs +43.2% (about +12.7% a year) · compared with the S&amp;P 500: -42.9 points">+43.2%</td></tr><tr class=""><td class="pname" data-v="cybersecurity">Cybersecurity <span class="ptk">CIBR</span> <span class="flow-tag in" title="Unusual buying over the past 6 months, compared with the other sectors and industries (score +0.19 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▲ in</span></td><td class="pv" data-v="51.2714" style="background:rgba(61,214,140,0.40)" title="Cybersecurity (CIBR) · This yr +51.3% · compared with the S&amp;P 500: +36.3 points">+51.3%</td><td class="pv" data-v="73.7941" style="background:rgba(61,214,140,0.40)" title="Cybersecurity (CIBR) · 2 yrs +73.8% (about +31.8% a year) · compared with the S&amp;P 500: +36.4 points">+73.8%</td><td class="pv" data-v="135.9823" style="background:rgba(61,214,140,0.40)" title="Cybersecurity (CIBR) · 3 yrs +136.0% (about +33.1% a year) · compared with the S&amp;P 500: +49.9 points">+136.0%</td></tr><tr class=""><td class="pname" data-v="oilfield services">Oilfield Services <span class="ptk">OIH</span></td><td class="pv" data-v="36.4961" style="background:rgba(61,214,140,0.40)" title="Oilfield Services (OIH) · This yr +36.5% · compared with the S&amp;P 500: +21.5 points">+36.5%</td><td class="pv" data-v="35.6601" style="background:rgba(61,214,140,0.26)" title="Oilfield Services (OIH) · 2 yrs +35.7% (about +16.5% a year) · compared with the S&amp;P 500: -1.7 points">+35.7%</td><td class="pv" data-v="20.4992" style="background:rgba(61,214,140,0.13)" title="Oilfield Services (OIH) · 3 yrs +20.5% (about +6.4% a year) · compared with the S&amp;P 500: -65.6 points">+20.5%</td></tr><tr class=""><td class="pname" data-v="biotech">Biotech <span class="ptk">XBI</span></td><td class="pv" data-v="24.2915" style="background:rgba(61,214,140,0.29)" title="Biotech (XBI) · This yr +24.3% · compared with the S&amp;P 500: +9.3 points">+24.3%</td><td class="pv" data-v="54.1544" style="background:rgba(61,214,140,0.35)" title="Biotech (XBI) · 2 yrs +54.2% (about +24.2% a year) · compared with the S&amp;P 500: +16.8 points">+54.2%</td><td class="pv" data-v="121.7063" style="background:rgba(61,214,140,0.40)" title="Biotech (XBI) · 3 yrs +121.7% (about +30.4% a year) · compared with the S&amp;P 500: +35.7 points">+121.7%</td></tr><tr class=""><td class="pname" data-v="pharmaceuticals">Pharmaceuticals <span class="ptk">XPH</span></td><td class="pv" data-v="14.5982" style="background:rgba(61,214,140,0.20)" title="Pharmaceuticals (XPH) · This yr +14.6% · compared with the S&amp;P 500: -0.4 points">+14.6%</td><td class="pv" data-v="45.2424" style="background:rgba(61,214,140,0.31)" title="Pharmaceuticals (XPH) · 2 yrs +45.2% (about +20.5% a year) · compared with the S&amp;P 500: +7.9 points">+45.2%</td><td class="pv" data-v="73.8838" style="background:rgba(61,214,140,0.27)" title="Pharmaceuticals (XPH) · 3 yrs +73.9% (about +20.3% a year) · compared with the S&amp;P 500: -12.2 points">+73.9%</td></tr><tr class=""><td class="pname" data-v="regional banks">Regional Banks <span class="ptk">KRE</span></td><td class="pv" data-v="9.2022" style="background:rgba(61,214,140,0.15)" title="Regional Banks (KRE) · This yr +9.2% · compared with the S&amp;P 500: -5.8 points">+9.2%</td><td class="pv" data-v="26.0133" style="background:rgba(61,214,140,0.21)" title="Regional Banks (KRE) · 2 yrs +26.0% (about +12.3% a year) · compared with the S&amp;P 500: -11.3 points">+26.0%</td><td class="pv" data-v="82.9697" style="background:rgba(61,214,140,0.29)" title="Regional Banks (KRE) · 3 yrs +83.0% (about +22.3% a year) · compared with the S&amp;P 500: -3.1 points">+83.0%</td></tr><tr class=""><td class="pname" data-v="transportation">Transportation <span class="ptk">IYT</span></td><td class="pv" data-v="8.1921" style="background:rgba(61,214,140,0.14)" title="Transportation (IYT) · This yr +8.2% · compared with the S&amp;P 500: -6.8 points">+8.2%</td><td class="pv" data-v="15.0354" style="background:rgba(61,214,140,0.15)" title="Transportation (IYT) · 2 yrs +15.0% (about +7.3% a year) · compared with the S&amp;P 500: -22.3 points">+15.0%</td><td class="pv" data-v="42.0290" style="background:rgba(61,214,140,0.18)" title="Transportation (IYT) · 3 yrs +42.0% (about +12.4% a year) · compared with the S&amp;P 500: -44.0 points">+42.0%</td></tr><tr class=""><td class="pname" data-v="software">Software <span class="ptk">IGV</span> <span class="flow-tag in" title="Unusual buying over the past 6 months, compared with the other sectors and industries (score +0.13 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▲ in</span></td><td class="pv" data-v="5.3088" style="background:rgba(61,214,140,0.12)" title="Software (IGV) · This yr +5.3% · compared with the S&amp;P 500: -9.7 points">+5.3%</td><td class="pv" data-v="19.9104" style="background:rgba(61,214,140,0.17)" title="Software (IGV) · 2 yrs +19.9% (about +9.5% a year) · compared with the S&amp;P 500: -17.4 points">+19.9%</td><td class="pv" data-v="57.5785" style="background:rgba(61,214,140,0.23)" title="Software (IGV) · 3 yrs +57.6% (about +16.4% a year) · compared with the S&amp;P 500: -28.5 points">+57.6%</td></tr><tr class=""><td class="pname" data-v="gold miners">Gold Miners <span class="ptk">GDX</span></td><td class="pv" data-v="3.2179" style="background:rgba(61,214,140,0.10)" title="Gold Miners (GDX) · This yr +3.2% · compared with the S&amp;P 500: -11.8 points">+3.2%</td><td class="pv" data-v="125.2681" style="background:rgba(61,214,140,0.40)" title="Gold Miners (GDX) · 2 yrs +125.3% (about +50.1% a year) · compared with the S&amp;P 500: +87.9 points">+125.3%</td><td class="pv" data-v="230.5743" style="background:rgba(61,214,140,0.40)" title="Gold Miners (GDX) · 3 yrs +230.6% (about +49.0% a year) · compared with the S&amp;P 500: +144.5 points">+230.6%</td></tr><tr class=""><td class="pname" data-v="insurance">Insurance <span class="ptk">KIE</span></td><td class="pv" data-v="1.8583" style="background:rgba(61,214,140,0.09)" title="Insurance (KIE) · This yr +1.9% · compared with the S&amp;P 500: -13.1 points">+1.9%</td><td class="pv" data-v="9.1494" style="background:rgba(61,214,140,0.12)" title="Insurance (KIE) · 2 yrs +9.1% (about +4.5% a year) · compared with the S&amp;P 500: -28.2 points">+9.1%</td><td class="pv" data-v="48.1726" style="background:rgba(61,214,140,0.20)" title="Insurance (KIE) · 3 yrs +48.2% (about +14.0% a year) · compared with the S&amp;P 500: -37.9 points">+48.2%</td></tr><tr class=""><td class="pname" data-v="metals &amp; mining">Metals &amp; Mining <span class="ptk">XME</span></td><td class="pv" data-v="1.3969" style="background:rgba(61,214,140,0.08)" title="Metals &amp; Mining (XME) · This yr +1.4% · compared with the S&amp;P 500: -13.6 points">+1.4%</td><td class="pv" data-v="63.4400" style="background:rgba(61,214,140,0.40)" title="Metals &amp; Mining (XME) · 2 yrs +63.4% (about +27.8% a year) · compared with the S&amp;P 500: +26.1 points">+63.4%</td><td class="pv" data-v="110.9971" style="background:rgba(61,214,140,0.37)" title="Metals &amp; Mining (XME) · 3 yrs +111.0% (about +28.3% a year) · compared with the S&amp;P 500: +24.9 points">+111.0%</td></tr><tr class=""><td class="pname" data-v="broker-dealers">Broker-Dealers <span class="ptk">IAI</span> <span class="flow-tag in" title="Unusual buying over the past 6 months, compared with the other sectors and industries (score +0.08 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▲ in</span></td><td class="pv" data-v="0.6553" style="background:rgba(61,214,140,0.08)" title="Broker-Dealers (IAI) · This yr +0.7% · compared with the S&amp;P 500: -14.3 points">+0.7%</td><td class="pv" data-v="37.8204" style="background:rgba(61,214,140,0.27)" title="Broker-Dealers (IAI) · 2 yrs +37.8% (about +17.4% a year) · compared with the S&amp;P 500: +0.5 points">+37.8%</td><td class="pv" data-v="105.0196" style="background:rgba(61,214,140,0.35)" title="Broker-Dealers (IAI) · 3 yrs +105.0% (about +27.0% a year) · compared with the S&amp;P 500: +19.0 points">+105.0%</td></tr><tr class=""><td class="pname" data-v="retail">Retail <span class="ptk">XRT</span></td><td class="pv" data-v="-0.6469" style="background:rgba(240,85,74,0.08)" title="Retail (XRT) · This yr -0.6% · compared with the S&amp;P 500: -15.6 points">-0.6%</td><td class="pv" data-v="13.1843" style="background:rgba(61,214,140,0.14)" title="Retail (XRT) · 2 yrs +13.2% (about +6.4% a year) · compared with the S&amp;P 500: -24.2 points">+13.2%</td><td class="pv" data-v="47.8878" style="background:rgba(61,214,140,0.20)" title="Retail (XRT) · 3 yrs +47.9% (about +13.9% a year) · compared with the S&amp;P 500: -38.2 points">+47.9%</td></tr><tr class=""><td class="pname" data-v="airlines">Airlines <span class="ptk">JETS</span> <span class="flow-tag out" title="Unusual selling over the past 6 months, compared with the other sectors and industries (score -0.14 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▼ out</span></td><td class="pv" data-v="-3.7406" style="background:rgba(240,85,74,0.10)" title="Airlines (JETS) · This yr -3.7% · compared with the S&amp;P 500: -18.7 points">-3.7%</td><td class="pv" data-v="29.3510" style="background:rgba(61,214,140,0.22)" title="Airlines (JETS) · 2 yrs +29.4% (about +13.7% a year) · compared with the S&amp;P 500: -8.0 points">+29.4%</td><td class="pv" data-v="67.8454" style="background:rgba(61,214,140,0.25)" title="Airlines (JETS) · 3 yrs +67.8% (about +18.8% a year) · compared with the S&amp;P 500: -18.2 points">+67.8%</td></tr><tr class=""><td class="pname" data-v="aerospace &amp; defense">Aerospace &amp; Defense <span class="ptk">ITA</span></td><td class="pv" data-v="-3.7926" style="background:rgba(240,85,74,0.10)" title="Aerospace &amp; Defense (ITA) · This yr -3.8% · compared with the S&amp;P 500: -18.8 points">-3.8%</td><td class="pv" data-v="36.3782" style="background:rgba(61,214,140,0.26)" title="Aerospace &amp; Defense (ITA) · 2 yrs +36.4% (about +16.8% a year) · compared with the S&amp;P 500: -1.0 points">+36.4%</td><td class="pv" data-v="93.3602" style="background:rgba(61,214,140,0.32)" title="Aerospace &amp; Defense (ITA) · 3 yrs +93.4% (about +24.6% a year) · compared with the S&amp;P 500: +7.3 points">+93.4%</td></tr><tr class=""><td class="pname" data-v="solar">Solar <span class="ptk">TAN</span></td><td class="pv" data-v="-11.4821" style="background:rgba(240,85,74,0.17)" title="Solar (TAN) · This yr -11.5% · compared with the S&amp;P 500: -26.5 points">-11.5%</td><td class="pv" data-v="11.1265" style="background:rgba(61,214,140,0.13)" title="Solar (TAN) · 2 yrs +11.1% (about +5.4% a year) · compared with the S&amp;P 500: -26.2 points">+11.1%</td><td class="pv" data-v="-10.7439" style="background:rgba(240,85,74,0.10)" title="Solar (TAN) · 3 yrs -10.7% (about -3.7% a year) · compared with the S&amp;P 500: -96.8 points">-10.7%</td></tr><tr class=""><td class="pname" data-v="uranium">Uranium <span class="ptk">URA</span></td><td class="pv" data-v="-11.7248" style="background:rgba(240,85,74,0.17)" title="Uranium (URA) · This yr -11.7% · compared with the S&amp;P 500: -26.7 points">-11.7%</td><td class="pv" data-v="35.3034" style="background:rgba(61,214,140,0.25)" title="Uranium (URA) · 2 yrs +35.3% (about +16.3% a year) · compared with the S&amp;P 500: -2.0 points">+35.3%</td><td class="pv" data-v="70.9079" style="background:rgba(61,214,140,0.26)" title="Uranium (URA) · 3 yrs +70.9% (about +19.6% a year) · compared with the S&amp;P 500: -15.1 points">+70.9%</td></tr><tr class=""><td class="pname" data-v="homebuilders">Homebuilders <span class="ptk">ITB</span> <span class="flow-tag out" title="Unusual selling over the past 6 months, compared with the other sectors and industries (score -0.14 on a scale of -1 to +1). This is an estimate from daily trading patterns, not actual money flowing in or out; see the guide at the bottom of the page.">▼ out</span></td><td class="pv" data-v="-11.7335" style="background:rgba(240,85,74,0.17)" title="Homebuilders (ITB) · This yr -11.7% · compared with the S&amp;P 500: -26.7 points">-11.7%</td><td class="pv" data-v="-30.0460" style="background:rgba(240,85,74,0.23)" title="Homebuilders (ITB) · 2 yrs -30.0% (about -16.4% a year) · compared with the S&amp;P 500: -67.4 points">-30.0%</td><td class="pv" data-v="15.2900" style="background:rgba(61,214,140,0.11)" title="Homebuilders (ITB) · 3 yrs +15.3% (about +4.9% a year) · compared with the S&amp;P 500: -70.8 points">+15.3%</td></tr><tr class=""><td class="pname" data-v="medical devices">Medical Devices <span class="ptk">IHI</span></td><td class="pv" data-v="-14.7328" style="background:rgba(240,85,74,0.20)" title="Medical Devices (IHI) · This yr -14.7% · compared with the S&amp;P 500: -29.7 points">-14.7%</td><td class="pv" data-v="-9.1045" style="background:rgba(240,85,74,0.12)" title="Medical Devices (IHI) · 2 yrs -9.1% (about -4.7% a year) · compared with the S&amp;P 500: -46.5 points">-9.1%</td><td class="pv" data-v="19.3894" style="background:rgba(61,214,140,0.12)" title="Medical Devices (IHI) · 3 yrs +19.4% (about +6.1% a year) · compared with the S&amp;P 500: -66.7 points">+19.4%</td></tr></tbody>
+      </table></div>
+    </div>
+    <div class="narrative" style="margin-top:16px"><div class="cap">Leaders and laggards</div><p>The S&amp;P 500 is +15.0% so far this year. Best so far this year: Semiconductors +64.1%, Oil &amp; Gas E&amp;P +55.9%, Cybersecurity +51.3%. Worst so far this year: Medical Devices -14.7%, Homebuilders -11.7%, Uranium -11.7%.</p></div>
+    <div class="narrative" style="margin-top:16px; border-left-color:var(--amber)"><div class="cap">Buying vs selling pressure <span class="tag-news">estimate, not actual money flows</span></div><p>Based on trading patterns over the past six months (an estimate, not actual money flows): possible buying in Technology, Energy, Semiconductors, Software, Cybersecurity, Broker-Dealers; possible selling in Homebuilders, Airlines.</p></div>
+    <div class="perf-note">Figures include dividends and are totals, not yearly averages
+      (+40% over 2 years means $100 became $140), as of the Oct 12, 2026 close.
+      "This yr" runs from the last close of last year. Hover over a figure for the yearly equivalent
+      and the difference from the S&amp;P 500; click a column heading to re-sort. The buying/selling
+      tags are an estimate from six months of trading patterns; see the guide below for what they can't tell you.</div>
+
+  <div class="eyebrow"><span class="n">05</span> Coming up this week, and what's in the news</div>
+  <div class="radar">
+    <div class="cal-col">
+        <div class="cal-block">
+          <div class="cal-head">Economic reports this week <span class="tag-news">from news headlines</span></div>
+          <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMifEFVX3lxTE1MeVNwMVVnVmhvRWo4b0N4WkhCRXQxTVRtb2ZmTWhCSmd4eERsN3Nfdllwejg0eG5ueFFCRUdPTzVUaXh4dEFZaWJqN3FFZnlFWTBlZ2ZvVkFFRzVScTR3TXRhZGl6MHp2RUF1clppVDRvR1lveC1FaXNCeXQ?oc=5">What to Look Out for in Economic Data This Week (October 12-16)</a></span><span class="meta">Kiplinger</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE5qdGh5bThPbktHR1d0eUZSaU5ELTI0OUg5bGpLSzU3bEJrVzR0ZUtDdGpXV0tYb3FZRTRVa2JueFFiQ2VTRXlpQWRRVkU5eHJqaWNNa1FhUTFEZzZNRUFOLQ?oc=5">Fed decision headlines two weeks of inflation and jobs data</a></span><span class="meta">Kraken Blog</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxOdW10dVZWcHQ3MkdPRy1fRGN2VVUzeV8tV2tRSnRfVHdBbllhS0hfTzlWUy1tM0pHZWxmTl84b3loTVFqRHdUX3I2REFQQ1h5ZTZIcHBJTy1Jcmd1VUpPdDRtdVhvbVpHMEVCQmJkbnNqYXBCUGZiTjVmcTM5NUpEbFgwb08wQU92TFE?oc=5">US consumer prices accelerate in August, push Fed closer to rate hike</a></span><span class="meta">Reuters</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMidkFVX3lxTE5STTJrbzhPMnZHaWxleExXdkdIUHdQWVNIcVpJMlNlODctaFRROVZFUjVpRk1fUW16RlhOWG0zclV6bjNnczROeWw2TWVFQ2xnbWFwNVZNM2YxT1UtSi1lTnMwdTg0aUZYNXIyUkVjTFV6UHJ4Rnc?oc=5">All Eyes on U.S. Jobs and Inflation Data as October Rate Hike Signals Take Center Stage</a></span><span class="meta">BigGo Finance</span></li></ul>
+        </div>
+        <div class="cal-block">
+          <div class="cal-head">Company earnings this week <span class="tag-news">from news headlines</span></div>
+          <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxNT2JlZjF1QU9yZTBqNVJ4aXJUUjVFMDA4SWxPdEVienI3d2dFcFF4Z3BVNE40LWxmOHV1REljUVFaSFY3X2FrQm1xV2NMYWY3SHRoOFdhMXc2ZWFyZGtYTGV3Ul9lY1htRExZOFpMLXJGRWVRSWU1dTBUcjVSc0lEckdXTEhkck45Ujh3?oc=5">Earnings Calendar and Analysis for This Week (October 12-16)</a></span><span class="meta">Kiplinger</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxPMnYzR3lrZ3pzbUNvSEpSckdGZGQzSG9nbDAxVmpCZG5CblY5Ukloc2hYbDlYR0l2ZEl4eW5qTklaeHhJR0V1ZXVXOUNUWXpDX2JnVzRsN3A4WUdZN3JHUGhSUnFpVTIyckdsb0g0dGw1bTd1WHZsRkZoSEtzc0FZR01DZ2dIcXBBZHp1emFHZl9mcTRCdHlnazdWYzdaWTRLaW45VnBBbHJRZw?oc=5">Tesla And Alphabet Set The Tone For A Pivotal S&amp;P 500 Earnings Week</a></span><span class="meta">Forbes</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxOSS1oSi1UOFZMeWdyejhiclhNMDI0OWVlMC1ReU5waDRZTEF0eUR2VWs3NHNsblg3ZzZ5TUMzc1RmZVhubEx6SUp1eFgydUZsY2RtdVNVTDJIUkNudWN0b0dXeXlUTDl0UDBDS256Wmp4MGxqUXAtcFRtRm1QUWMxMnVUYldLUTktalV5S280TnBURkpHXzZqeQ?oc=5">8 Company Earnings to Watch This Week (April 27-May 1)</a></span><span class="meta">The Motley Fool</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiowJBVV95cUxPSk9NXzJ6dkQ5VlpxM0ZHR3BGOVI3TGdCT0NpaHdYNWU2c3dVNUQwRFhiQVNrcUJLT1dEUXItSjVhNmFjakE3UzhpcWh4bkgtcHNSNmRpUDdBNlliUjZIbkRCMXM0cVdDWDNfUVpNX3lzQXRQTHQtVHVmTU8yOEhXSzA4dWMwNUZHc0xqdnBwd1ZiYUV0LUxxOTFLOERxd1hodHRqRmdsWmw5ZjExaGpUOTlSdnIxbmhUOFljRTAwSGY3VEo5RGh3U2dBdFowTWxEVVdRQW5FVnVQSHlGdGdrb19lWEc4VGVSN2pXSER1MFpXNW5sREpwVEpEMldWdXEyTVFTcUpzc1I2Y25uZFp2dTd1S3RKUktnRjU1S3F6bTc2VzQ?oc=5">Nasdaq, Dow, S&amp;P 500 Futures Edge Higher Ahead Of Key Earnings Week Even As Middle East Tensions Continue: DJT, NVDA, SLS, PANW Stocks In Focus</a></span><span class="meta">TradingView</span></li></ul>
+        </div></div>
+    <div class="news-col"><div class="news-theme">
+      <div class="theme-head">Energy &amp; Oil</div>
+      <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxPa2sxWTVlekZ2bXloVXNiOUltMm5iODVOMW9NTUo4Q016ZU02OFQ5TU9relFTcUZSaW8xV0c2YmNVbE5jWW5uQjhKeXNKaWxBcE92SU1fQUU0R2RVamdNUzRhTER3NzEzMFUtRVd3bzVnZ1g0ZmtRek95VHdYbVNNMmNacmlDd3dLTThmaGF2VVJDYTc4c1hQeUZfX0ZGQzZjTXlpLU52U3JuUGpjOHJjWndoS19LandSX0dtMmdUMzNKZw?oc=5">Oil falls as Russia diesel supply prospects counter Gulf supply risks</a></span><span class="meta">Reuters · 4h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxQMTkwZW9nLXl1eWlMQlZFd0oxTU40NEhlT1hJbDdhaGRpc3IyWkl4YzhPa1AzelhJNDRSVGdNT2x5akdidldLdklIVkRmYTE5ckhsQmxGR3Y2ZmdXUlJQZHBXMFA0cElkWlBKU19yaTQ1QUVFZjJobk8zckw0Z1lCWlM5YWhoSmRUckNMMW0xNVdCbUhiSEwzVlVIR0d3TDJaUy1Lc2UxTFpPZWIxX3dPTUJ3LWF4bTFmUVRxSVdZeHpSZkZwTVJF?oc=5">Iran Is Fortifying Nuclear Sites and Rallying Its People for a Return to Fighting</a></span><span class="meta">WSJ · 1h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxPTTZ5RGNoVEhkQU9PWXZCMWlyaTB2NFJmb2dZa2FMSkl3VWdrTUZrY3dTTU9scnJ6TUxWazRLbjluTUNFUVFKUFFGaDdjUng4QWczcERLUXhlNEFMWTNBVWs2bDJWYXZZZU5yX2hvdmdOandqZVJiVWhKYzg0QTRhZm1LNFFhajFfRVlpajdicE_SAZYBQVVfeXFMT1hrMExFRVMxY2V5MF80bTRKbVRpMzR1eVQyRjVFQnBTOTJjTkVwb3RHTm1KOGRxNEE2Yl9ieWkxQ0t4SFQ5SFB2enFyTlVsTTdOZjZZWEVTMU81ZkhjSHVBOUlCUi1hUVViV1JhaWZxbWNBSGdJMlA0XzdoalFsM2dLOXpPSVdMdUhScE9CQ0tnVjZNVmZR?oc=5">Oil prices spike after Houthi attacks on Saudi airports</a></span><span class="meta">The Hill · 7h ago</span></li></ul></div><div class="news-theme">
+      <div class="theme-head">Sanctions &amp; Trade Routes</div>
+      <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxQNHU4aWdseGJQNDlHSkY2bVlVakhtNG9qSWo2eHl0MV9WSTRoc1lqdUdTcHlXeWdCVU1nZ3V6c2Z2dV9FMmRXdGlmMjhOOVpENE9ZRkY1UkRxM1ZzUTBaLTE0OUhEUE9nVzFVd1pUQUlJcjljeWhjNEJvSk55VlhobmU5Q0F2S2lKb0M0Z2lLcjg1Y1J2bG8zUU8xUXdLUV93WUpOMG5DSE11dzJmdklv?oc=5">EU adopts nearly 1,600 new sanctions listings targeting Russia</a></span><span class="meta">Reuters · 20h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMi3AJBVV95cUxPWHNlczJqY1VHMDg3NEFKaXNMTkN5eVJSdXB5VE5ZR21CRWpoYm1GeVVLVkl2VjkzUk15RGtEZXRKMG80ZlQ0elBzSWR2M1Z4MmItR2p4WVQyZk43SHFYNGZ5c0JodTFxVmdVTU52VzhWM0tGSHZjcFdZUVE0Sl9td2dnd1BoUUN3R3RzbFAtRWwzUk01d1VsUzg3Q0RzLUowY1ZibnBYbjZnaUFnclFuREw5S2ljajB4UU9qWWRFWXpITUE3a0k5enh2X2JQSEFBSkZadmpZRDVuZy01UGR1bWY0Vk9CenJ5LUhRV0ZjaWljaXhsWjJvS0VnbEU1SUhQcWdUOXBHWkRncWRXZXY2end4MmM3TEZfQlpEZ2ZneTRhU25NX3B2LVl3Nzk4dkJxa2o4NFJjYTVTejBwRFZXRGFNc01BNG9RaU1sZHgwTFpQZXB3Y0RUa00yWEE?oc=5">Russia’s war of aggression against Ukraine: EU agrees largest-ever package of listings targeting almost 1600 individuals and entities in Russia’s military-industrial complex</a></span><span class="meta">Consilium.europa.eu · 18h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxPX2lxdnRVVWZzV3dRUlRsZ1l1UUp6V1pUdDB5WEJxSERYN2JZWU4zMWVyU19vQnc0R3ZubXZvdnZMb3JFNkN3TlpSaDE0YWlEZGV4bUdCSWFaMUpKU2NJNERTRG5zdTh2V3NhbUk3V25EdHFmc0wyQ3d4YW1NaU53TDVZRFg1eWhSWlY4N191R0kwTXk3WlZtVUVrTm5zWlk?oc=5">China sanctions Paraguay and Belize officials over ties with Taiwan</a></span><span class="meta">AP News · 13h ago</span></li></ul></div><div class="news-theme">
+      <div class="theme-head">The Dollar</div>
+      <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPNWtpbW1jM01CMTNiSzl1c2gtSFMyUmlINENjU2Y0V2wtTG9ibDZsMUNHMkxvZ1h0dTQ3RzZqNHp0eGF0by1jVnRxOWJYMTktOExoV2tfWHZ0aG1xUzVjVmJsZ0pGSklON0JzYWVPaGZ6YjZkQWltczBJVEFoMVRpLUlJUWdid19qRXRzZ0dxU0hLdFRYX1QxNHhEbWJJRk5rN1hCUVZzWmh4bkNmaGNmZQ?oc=5">The Dollar Dilemma and India’s Strategic Responses</a></span><span class="meta">NatStrat · 15h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTFAtY0wtT2xhenJFcU8ydUp0OHRrZ3JuQXEwQ3RwZWQ5N3lpbzZRZjYxRTQ0NTBYNTZmLW5Cb3IzaUFNZlctMVp0TElWM016TC0yVE1SZ1JZUTQ3Sml6U0xXaEx1aGEtOHFmZmg1MFZrZTI?oc=5">The Dollar’s Dominance Is Eroding</a></span><span class="meta">Stanford Graduate School of Business · 1619h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQVWhJVF8wUGZ1Y0kxTHRpeTlnM1Q3ZEticmtaajdRX1V2UFBScVlETHJjaFY3RTQ0OVM1UzJaSGI5YU50dlhIREFYT3ZrRFpUazdkbTJHVnliWGRuWFkxZG1XNzdiX0dreHNVdkw5ZlJVSnZIV1dpOHZoblpRZVFlRWhCOVZBcmlkNXdaVDhjMFlZejNrTTBPWUhPS2k?oc=5">The U.S. Dollar Is the World’s Reserve Currency. Why Does That Matter?</a></span><span class="meta">Peter G. Peterson Foundation · 2949h ago</span></li></ul></div><div class="news-theme">
+      <div class="theme-head">Trade &amp; Tariffs</div>
+      <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxQdHRhZVhSMDI3MEllU3ZzNkkxZG1VaGxaQ3k4c0NqTjhvemRrSEIzbEZCQ0ZNc0xidy1yLXExWXlHd2VUNXpxTGx4LXpydlQ0MldqQWdickpTR2Y5ZFEtQW9CUG9jdGhHUHdGdmV4VmV0eXRnYXAtVWxMMVZpTDhoRG4tMUhSeVliUUVEV2s3aVJHWERuQlVxX21aMWRKcjB1?oc=5">Trump sticks with tariffs despite widespread disapproval among U.S. voters</a></span><span class="meta">The Globe and Mail · 36h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxPR1NXVl9ZeHdwTUdKaTNsN2dkTlFhVTlrRkM5R05UYWZPWFdvNVZmZS1FaDVReHFoN2lBLVpuZ0Utams2VXV1Y0ltMzBJcHFES0dZSlF5TlVON3NJSGYzakdTWUZGS2FxVkI3SXVrMF83dmVhSndQV3ZtVEpsaHpyLXN3QTRuRjg?oc=5">Democratic Candidates in Northern States Are Hammering Home Trump’s Tariffs</a></span><span class="meta">NOTUS · 19h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxNWFV3ZktKc0pmS3laeUhZbks0RXk0eThVUU1ld2JoTER2eC1NaHh4eGd3akpOWDIyRHl2bUE5OW9oekUwUG5qS1hvZ0ZPSDJkd01wWjBPNFpkMGJ6SU9WZnMtQjlFUk1GRVhRYklLeEpDVzlpZ05Sa3NlcFFFdG9nTTFGTmNQalFvMnlaaUZGLTE?oc=5">Detroit despairs as ‘insanity’ of Trump’s Canada trade war punishes city | Trump tariffs</a></span><span class="meta">The Guardian · 1101h ago</span></li></ul></div><div class="news-theme">
+      <div class="theme-head">Central Banks</div>
+      <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxNWXQtTWY1cWNhbC0tUDFkUld5Zmd0X0pKTGhvQ2ZKUzBGVlU2WlQySHk2WjNaMGRUQTduNG93elRxa3RnUC15SEJWREVaRGN2QUs1Y0szdUc4eGJ2M0dLYlI1TlMtZGdOc1h2a3BDSFdYLWRlSjAwTzZWVGgyRWNwQ1pBRnVRdGxsN3RWZnlKaDVGRzc0NFdnZ0pMU29RR3FBcG8xd1B4WXRRMG5XUkQzNzhn?oc=5">IMF expects gradual BOJ rate hike towards neutral setting</a></span><span class="meta">Reuters · 2h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQaFF4ZGIyZkkzd3I3Qnl6TzhEWlJzUGZTYTBQSmdqZnJLWmZSSDN3Q2lyVWNORWZXaWxVQnNGdzgxNzE0bTBISmVjcmh4Q0preHJTcGlLcnVGcTVnZU5KSm1qSHYxVEJPMzhHMUJ4QXBxNU5Ub1U3UE4ycFVBLTBWeWFoVkpGVGVZQUVqcWNXNlpzbjVDdmRDeWhuSm9wWlAzLWxlUkd1bEF0SExyRnk2MloyNUtrcUJfLUV6SnRRUQ?oc=5">News | Distressed Federal Reserve landmark poised for revival in downtown San Francisco</a></span><span class="meta">CoStar · 6h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxQcDBXMVZrSjU5WnliWGJGSG1qZlYxR0lPSFNuMW13R1BCTjNFV0xOYmVKRVN4dzBueFVnaUtYNTJHeW42Rl9Na0NDdFRZaF9FV0FwMGdFRVhaZ2xoOFpUQWh1QUVYQjZfMndCTENxNUlfOXpSQ1ZZdllMWmtNSmd1OGVWSlc3UncyTC11ZURKbzI0LWJaMi1UY25PeWVfeFFlNTUtekJMQ0dBdw?oc=5">Federal Reserve selects KC executive to lead its nationwide payments system</a></span><span class="meta">The Business Journals · 11h ago</span></li></ul></div><div class="news-theme">
+      <div class="theme-head">Government Debt &amp; Bonds</div>
+      <ul class="hl-list"><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxQVktTdlI3bkRJUTFtb0hZd1RNa1F2UmRlRy1LTWxpR0txNmgyX0R2TnNCbXFpZ3pVTUFuSTJGc2U2T3Z0WkZIenpzNDBtdUxqbEIzOTNtU0hNR3g3OXYxNFVxS192VTNaSGdfbl8xVXotMUVieHgzUlpTVkwxbHhMdTdJcjNuU0lXYTFYZFhtUkxiSjdIOUVDcS1DNnp6VzFPaWNrVWxVbnA?oc=5">U.S. Treasury Yields Retreat From Early Highs; Eurozone Yields Remain Elevated</a></span><span class="meta">WSJ · 4h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxObTN2QUVYVVh2QVd5Rko0Vk1NR3pKWlRHRGlNMW1sTnZGZUJMMDAzRU1UOWNwZFAzR2M4NnlnMEM1eTJWdV9lMlVkaVp1RVlSTGV6OExwVXVTd3hMak5kbzh4dlJqVEJGUjVhYXAwSXJteXdiMmJIaE9lYTFyU2lJWmN2d2pURmo4VUpvOUJlTHZUUFhvZnFnclVBZHpwY2hwMHhRd2Zn?oc=5">Treasury Yields Are Giving Investors a Safer Exit From the AI Trade</a></span><span class="meta">StoneX · 19h ago</span></li><li><span class="hl"><a href="https://news.google.com/rss/articles/CBMiekFVX3lxTE0xQjVTa1BBRlpvckhQbmZLVnN0M09rVTdwUVZiZlg4TnlfRUJPZ3pObmZWNlIwMXdhRFpHcHhacy1tTGtsOXprd1ZKVWtfSk1pQVMwVGpwcFpja2xhRndZTWR6U2swYU9qU21EeEo4UFAyOGRkSFFUelBn0gF_QVVfeXFMUENSeTg4TV9sQUNFWGpydVVoQkpfajNHTkN6RndmcjNWaTktS0habmRjWnpIeWF0Vi1IV1BkQ2lveWVYN3duV2RrSmQ3Vk0zcUFjMU50Q19qbWVNUk5qM05HcHduNkgxbEIxOHdoVUZHYzRnLTlsWHNUdHp4cWZwSQ?oc=5">Treasury yields steady as traders wrap up volatile week</a></span><span class="meta">CNBC · 92h ago</span></li></ul></div></div>
+  </div>
+
+  <div class="eyebrow"><span class="n">06</span> Plain-English guide to every number on this page</div>
+  <div class="glossary"><div class="gloss">
+          <div class="gloss-term">VIX</div>
+          <div class="gloss-body">
+            <p class="g-what">The stock market&#x27;s &#x27;fear gauge.&#x27; It shows how much traders expect the S&amp;P 500 to move, up or down, over the next month, based on what they&#x27;re paying for options right now. It doesn&#x27;t say which direction, only how big the swings are expected to be.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Think of it as the price tag on what you sell. When it&#x27;s low, buyers pay little for protection, so selling puts earns little. 15 to 20 is the normal, comfortable range. 20 to 28 pays better, but prices swing enough to reach your strike more often. Above 28 the pay looks great, but that&#x27;s usually because something frightening is happening, and it&#x27;s exactly when a sold put is most likely to leave you owning the stock.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Yes. Under 15: 0 points. 15 to 20: 1 point. 20 to 28: 2 points. 28 or more: 3 points.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">VIX vs 3-month</div>
+          <div class="gloss-body">
+            <p class="g-what">This month&#x27;s fear gauge (VIX) divided by the same gauge measured over three months (VIX3M). Normally the three-month number is a little higher, because the further ahead you look, the less certain things are, so the ratio usually sits below 1.00.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>One of the most useful numbers on the page. When the ratio climbs above 1.00, traders are more worried about the next few weeks than about the next few months. That&#x27;s what real stress looks like, and it often shows up here before the VIX itself looks alarming.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Yes. Below 0.90: 0 points. 0.90 to 1.00: 1 point. Above 1.00: 2 points.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">MOVE</div>
+          <div class="gloss-body">
+            <p class="g-what">The bond market&#x27;s fear gauge: how much traders expect US government interest rates to swing over the next month.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Interest rates are the foundation every other price is built on, so trouble often shows up here before it reaches stocks. Under 95 is calm. 95 to 120 means the bond market is jumpy and stocks may follow. Above 120, interest rates are driving the whole market, so be extra careful around Fed meetings and inflation reports.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Partly. Under 95: 0 points. 95 to 120: listed as a watch item but no points. 120 or more: 1 point.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">10-year rate</div>
+          <div class="gloss-body">
+            <p class="g-what">The interest rate the US government pays to borrow money for 10 years. It&#x27;s the most-watched interest rate in the world, and mortgage rates and company borrowing costs follow it.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Investors use this rate to work out what a company&#x27;s future profits are worth today. When it rises quickly, shares of fast-growing companies (tech especially) usually fall, even if nothing about the business has changed. How fast it moves matters more than the level.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. It&#x27;s used to build the yield-curve number below.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Yield curve</div>
+          <div class="gloss-body">
+            <p class="g-what">The 10-year government interest rate minus the 2-year rate, in percentage points. Lending for 10 years normally pays more than lending for 2, so this is usually positive. The 2-year rate comes from the Federal Reserve&#x27;s free FRED database; if that doesn&#x27;t load, the 5-year rate is used instead and the tile says so.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Positive and widening is the normal, healthy shape. Shrinking toward zero suggests the economy is later in its cycle. Below zero (&#x27;upside down&#x27; or &#x27;inverted&#x27;) means investors expect the Fed to cut rates later, and in the past that has often come a year or more before a slowdown. On its own it isn&#x27;t a reason to stop selling puts; it matters more when junk bonds are also falling and the fear gauges are rising.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Yes. 1 point when it&#x27;s below zero. 0 otherwise.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Inflation (CPI)</div>
+          <div class="gloss-body">
+            <p class="g-what">How much prices overall have risen over the past 12 months, measured by the government&#x27;s Consumer Price Index. It&#x27;s the number the Federal Reserve watches most closely. It only updates once a month.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Think of inflation as the cause and most of this page as the effect. When inflation is high or rising, the Fed keeps interest rates high or raises them, which makes borrowing more expensive and weighs on stock prices. A reading that&#x27;s rising again is called out separately, because that kind of surprise moves markets most.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Yes. Under 2.5%: 0 points. 2.5% to 3.5%: 1 point. 3.5% or more: 2 points.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Junk bonds (HYG)</div>
+          <div class="gloss-body">
+            <p class="g-what">A fund that holds bonds from riskier, lower-rated companies (often called junk bonds). Its price change over the last five days is used as a quick read on whether lenders are getting nervous.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>If a company gets into trouble, its lenders are paid before its shareholders, so lenders tend to notice problems first. If this fund has been falling for a week, lenders are pulling back, often before stocks react. If it&#x27;s steady while the VIX is high, the stock market&#x27;s nerves are probably about trading and positioning, not companies actually going bust.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Yes. 1 point if it has fallen more than 1% over five days.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">US dollar</div>
+          <div class="gloss-body">
+            <p class="g-what">The US Dollar Index (DXY): the dollar&#x27;s value against a basket of major currencies, mostly the euro.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>A fast-rising dollar makes borrowing in dollars harder around the world and cuts the value of US companies&#x27; overseas sales, so it usually goes with nervous markets. A falling dollar tends to go with calmer markets and higher commodity prices. How fast it moves matters more than the level.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. Background only.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Oil (WTI)</div>
+          <div class="gloss-body">
+            <p class="g-what">The price of US crude oil, in dollars per barrel.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Oil is one of the fastest ways world events turn into inflation. A sudden jump is a risk in itself and a reason for the Fed to keep rates higher. A sudden drop usually means traders expect a slower economy. Read it alongside the Energy &amp; Oil headlines further down.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. Background only.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Oil (Brent)</div>
+          <div class="gloss-body">
+            <p class="g-what">The price of international crude oil (the kind shipped by sea), in dollars per barrel. It&#x27;s the oil price most affected by the Middle East.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Reads like US oil above. When Brent pulls well ahead of US oil, it usually points to a shipping or supply-route problem, like the Strait of Hormuz, rather than a change in how much oil the world wants. In panel 02, Brent&#x27;s price and its move over the last five trading days feed the scenario light.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Not in the stress score. It is one of the scenario light&#x27;s inputs in panel 02.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Gold</div>
+          <div class="gloss-body">
+            <p class="g-what">The price of gold, in dollars per ounce.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Gold usually falls when interest rates rise, because it pays no interest. The telling case is when that breaks down: if gold is rising at the same time as interest rates and the dollar, investors are usually looking for safety for a reason that doesn&#x27;t show up anywhere else on this page yet.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. Background only.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Stocks vs economy</div>
+          <div class="gloss-body">
+            <p class="g-what">Often called the Buffett Indicator: the total value of the US stock market divided by the size of the whole economy (GDP). Calculated from two free Federal Reserve data series.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Above 100% means the stock market is worth more than a full year of everything the US economy produces. Today&#x27;s reading is a record. It moves slowly and is a poor timing tool, since it can stay high for years, but very high readings have raised the odds of an eventual pullback in the past.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. It only updates a few times a year.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Fed&#x27;s key rate</div>
+          <div class="gloss-body">
+            <p class="g-what">The interest rate the Federal Reserve sets for overnight lending between banks: the Fed&#x27;s main tool for speeding up or slowing down the economy. Shown as the Fed&#x27;s official target range, straight from the Fed&#x27;s own data.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>The level tells you where the Fed is today. What matters more is what comes next, and panel 02 shows that each morning: how many more hikes or cuts the market expects, and whether that changed this week.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. Updated daily.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Fed hikes expected</div>
+          <div class="gloss-body">
+            <p class="g-what">How many more quarter-point rate hikes (or cuts) the market expects from the Fed over the next 12 months. It&#x27;s worked out from the 1-year Treasury bill: that bill&#x27;s rate is roughly the average interest rate investors expect over the coming year, so the gap between it and the Fed&#x27;s current rate shows how far they expect the Fed to move. Every 0.25 points of gap is about one quarter-point hike.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>A free way to see the market&#x27;s Fed forecast every morning, without paying for futures data. The number tells you how many moves are expected; the change from last week tells you whether the market now expects more or fewer. Treat tiny changes (a tenth of a hike or less) as noise.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. It feeds the plain-English summary in panel 02.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Rate expected in 6–12 mo</div>
+          <div class="gloss-body">
+            <p class="g-what">The short-term interest rate the market expects for the period six to twelve months from now. It&#x27;s worked out from today&#x27;s 6-month and 1-year bill rates: if the 1-year bill pays more than the 6-month bill, investors must expect rates to be higher in the second half of the year.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>It focuses on next spring and summer, which is when the question &#x27;one more hike, or a pause?&#x27; gets settled. A rise of 0.10 points or more in a week means the market has moved noticeably toward more hikes. The math is a simple approximation, accurate to a few hundredths of a point, which is plenty for seeing the direction.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Not in the stress score. A 0.10-point move in a week is one of the scenario light&#x27;s signals.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">1-yr rate a year out</div>
+          <div class="gloss-body">
+            <p class="g-what">The 1-year interest rate the market expects a year from today, worked out from today&#x27;s 1-year and 2-year rates.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>It answers a practical question: should I buy a 2-year note now, or a 1-year bill now and another one next year? If you think 1-year rates a year from now will be below this number, the 2-year note is the better buy. If you think they&#x27;ll be above it, buying 1-year bills twice wins.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. A reference for buying Treasuries.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Bill vs your cash</div>
+          <div class="gloss-body">
+            <p class="g-what">The 1-year Treasury bill rate minus what your money-market fund pays. The money-market rate is typed in by hand (CASH_BENCHMARK at the top of the script), because no free source publishes it.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>How much more you&#x27;d earn in a year by moving idle cash into a 1-year bill and holding it. Money-market rates follow the Fed, so if more hikes come, the real gap over the year will end up a little smaller than today&#x27;s number.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. A cash-management reference.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Gasoline</div>
+          <div class="gloss-body">
+            <p class="g-what">Wholesale gasoline futures, in dollars per gallon. Not the pump price, but pump prices follow it within a few weeks.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Gasoline is how an oil shock reaches households fastest, and it shapes what people expect inflation to be. A lasting rise here makes the long-run inflation number more likely to move.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. Background only.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Inflation expected, 5 yrs</div>
+          <div class="gloss-body">
+            <p class="g-what">The average yearly inflation investors expect over the next five years. It&#x27;s the gap between the regular 5-year Treasury rate and the rate on the 5-year inflation-protected Treasury (TIPS). From the Fed&#x27;s FRED data, series T5YIE.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>This rises and falls with oil prices, so it going up during an oil spike is expected. On its own it doesn&#x27;t tell you whether the spike will last; the long-run number next to it answers that.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Inflation expected, 10 yrs</div>
+          <div class="gloss-body">
+            <p class="g-what">The same measure over ten years (FRED series T10YIE).</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>Moves like the 5-year version but less, because more of the ten years lies beyond today&#x27;s oil shock.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Long-run inflation expected</div>
+          <div class="gloss-body">
+            <p class="g-what">The yearly inflation investors expect for the five years that start five years from now (FRED series T5YIFR, known as the &#x27;5-year, 5-year forward&#x27;). It deliberately ignores what&#x27;s happening today and asks what inflation will look like once today&#x27;s shock has passed.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>This is the Fed&#x27;s favorite test of whether an oil shock is turning into lasting inflation. If oil jumps and this barely moves, investors believe the shock is temporary, and the Fed can stop raising rates soon. If it climbs by 0.10 points or more in a month, the shock is starting to stick, which tends to push long-term rates up and bring more rate hikes.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>Not in the stress score. Its one-month change is one of the scenario light&#x27;s signals.</p>
+          </div>
+        </div><div class="gloss">
+          <div class="gloss-term">Extra pay to lend long</div>
+          <div class="gloss-body">
+            <p class="g-what">The extra interest investors demand for lending to the government for 10 years, compared with lending for a few months at a time and rolling it over. Economists call it the term premium. This is the Federal Reserve Board&#x27;s estimate (FRED series THREEFYTP10), which arrives about a week late. News stories often quote the New York Fed&#x27;s estimate instead; it gives a different number but usually moves the same way.</p>
+            <p class="g-read"><span class="g-tag">What it tells you</span>When long-term rates rise because of worries about government debt, heavy government borrowing, or foreign buyers stepping back, rather than because of the Fed, it shows up here. If this is rising while Fed expectations hold steady, debt worries are pushing long-term rates up, and Fed rate cuts wouldn&#x27;t fix that.</p>
+            <p class="g-score"><span class="g-tag">Counted in the stress score?</span>No. The direction over a month matters more than the level.</p>
+          </div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Scenario light (panel 02)</div>
+          <div class="gloss-body"><p class="g-what">Sorts each morning into one of three stories. Base: the war drags on, oil stays high, and the Fed raises rates once more and then pauses. De-escalation: a deal, oil falls, and the market drops the rate hikes it expected. Escalation: wider disruption, inflation expectations climb, and more rate hikes. The light counts simple signals for each side: oil&#x27;s price and its move over five trading days, the one-month change in long-run inflation expectations, the one-week change in the rate expected in 6 to 12 months, and the one-week change in the 10-year rate. Three or more signals on one side, and more than on the other, switch the light; otherwise it stays on Base. The trigger levels live in SCENARIO_THRESHOLDS at the top of the script. It is separate from the stress score at the top of the page: the stress score asks &#x27;should I sell options today?&#x27;, the scenario light asks &#x27;which story is the bond market telling?&#x27;</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Government interest rates table and chart (panel 02)</div>
+          <div class="gloss-body"><p class="g-what">The interest rates the US government pays to borrow for different lengths of time, from 1 month to 30 years. These are the official figures the Treasury publishes each afternoon, so they run up to a day behind the live market. The change columns show how much each rate moved since the previous day, about a week ago, and about a month ago, in percentage points: a move from 4.50% to 4.75% is +0.25. The chart compares today with a month ago. If the short end (left side) rose most, expectations for the Fed changed. If the long end (right side) rose most, worries about inflation or government debt grew.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Rate gaps (panel 02)</div>
+          <div class="gloss-body"><p class="g-what">Three differences between long- and short-term rates: 10-year minus 3-month, 10-year minus 2-year, and 30-year minus 5-year. When a gap widens because long-term rates are rising, that&#x27;s usually worry about debt and inflation. When it widens because short-term rates are falling, the market is expecting rate cuts.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Government debt auctions (panel 02)</div>
+          <div class="gloss-body"><p class="g-what">The government borrows by auctioning new notes and bonds several times a month. For the latest auction of each length, the table shows the interest rate the auction set and two measures of demand, each compared with the usual level (the average of the previous six auctions of the same length). &#x27;Bids per $1 sold&#x27; is how many dollars investors offered for each dollar of debt sold; lower means fewer buyers. &#x27;Left with dealers&#x27; is the share the big Wall Street banks ended up holding; they&#x27;re required to bid, so a bigger share means other buyers stayed away. Weak auctions push long-term rates up. One common measure, the &#x27;tail&#x27;, isn&#x27;t shown because no free source has the data needed to calculate it.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Central-bank countdown (panel 02)</div>
+          <div class="gloss-body"><p class="g-what">Days until each upcoming interest-rate decision by the US Federal Reserve, the European Central Bank, the Bank of Japan and the Bank of England, plus other key dates. Anything within five days turns amber. Only officially announced dates are listed; when a bank runs out of listed dates, the panel reminds you to add its next ones.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Stock markets around the world (panel 03)</div>
+          <div class="gloss-body"><p class="g-what">Stock markets in Asia and Europe, plus where US stock futures are pointing, each compared with its last close. By the time the US market opens, moves that already happened overseas are usually &#x27;priced in&#x27;. A move in US futures that Asia and Europe didn&#x27;t also make is more likely to fade once regular trading starts.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Currencies (panel 03)</div>
+          <div class="gloss-body"><p class="g-what">Major currencies against the US dollar. USD/JPY is the one to watch most closely. A sudden jump in the Japanese yen (which shows up as USD/JPY dropping sharply) has in the past been an early sign that big funds are unwinding trades built on borrowing cheap yen, and that kind of unwinding can hit stock prices faster than the headlines suggest.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Sector and industry performance (panel 04)</div>
+          <div class="gloss-body"><p class="g-what">How each part of the US stock market has done so far this year, over the past two years, and over the past three years. Each group is tracked through a fund (ETF) that holds its stocks: the eleven SPDR sector funds for sectors, and narrower funds for industries such as semiconductors or regional banks. The figures include dividends and are totals, not yearly averages: +40% over 2 years means $100 became $140. Hover over a 2-year or 3-year figure to see the yearly equivalent and how far it is ahead of or behind the S&amp;P 500. Use it to see where the market&#x27;s leadership has been, not to predict what comes next. A dash means there wasn&#x27;t enough price history, and the brief never fills a gap with a guess. Click a column heading to re-sort.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Buying and selling pressure tags (panel 04)</div>
+          <div class="gloss-body"><p class="g-what">A small &#x27;in&#x27; or &#x27;out&#x27; badge next to a sector or industry, shown only for the ones that stand out most from the rest. This is NOT real fund-flow data. Actual money flows into and out of funds aren&#x27;t available from any free source this brief uses. Instead it&#x27;s an estimate built from ordinary daily trading: on each day, trading volume counts as buying when the price closed near the day&#x27;s high and as selling when it closed near the day&#x27;s low, averaged over the past six months. It can be thrown off by thin holiday trading or one unusually large trade, so treat a tag as &#x27;worth a second look&#x27;, not as proof that money is moving.</p></div>
+        </div><div class="gloss gloss-panel">
+          <div class="gloss-term">Stress score (top of page)</div>
+          <div class="gloss-body"><p class="g-what">Adds up the points from the scored numbers in panel 01, out of 10. It isn&#x27;t a prediction. It shows how many separate, unrelated signals agree that something is off. 0 to 2 (green): the gauges are calm and mostly agree. 3 to 5 (amber): they disagree with each other, a good time to trade smaller. 6 or more (red): several unrelated measures are stressed at once, and that kind of agreement across different corners of the market is worth taking seriously, more than any single number being high.</p></div>
+        </div></div>
+
+  <footer class="foot">
+    <b>Sources:</b> stock, currency and commodity prices from Yahoo Finance · government interest
+    rates and auction results from the US Treasury · inflation, inflation expectations and the Fed's
+    rate from the Federal Reserve (FRED) · news from Google News ·
+    calendar: No Financial Modeling Prep key set, so this week&#x27;s calendar is shown as news headlines. A free key adds a proper calendar with forecasts.<br>
+    For information only — not investment advice. Anything estimated is labeled as an estimate.
+    Check anything you trade on against your usual data sources (Barchart · GuruFocus · Seeking Alpha).
+  </footer>
+
+</div>
+<script>
+(function () {
+  document.querySelectorAll('table.perf').forEach(function (tbl) {
+    var body = tbl.querySelector('tbody.sortable');
+    var heads = Array.prototype.slice.call(tbl.querySelectorAll('th[data-k]'));
+    heads.forEach(function (th, col) {
+      function sortBy() {
+        var dir = th.getAttribute('data-dir') === 'desc' ? 'asc' : 'desc';
+        heads.forEach(function (h) { h.removeAttribute('data-dir'); });
+        th.setAttribute('data-dir', dir);
+        var byName = th.getAttribute('data-k') === 'name';
+        var rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col].getAttribute('data-v'), y = b.cells[col].getAttribute('data-v');
+          if (byName) return dir === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
+          var nx = parseFloat(x), ny = parseFloat(y);
+          var xb = isNaN(nx), yb = isNaN(ny);
+          if (xb || yb) return xb && yb ? 0 : (xb ? 1 : -1);   // blanks always last
+          return dir === 'asc' ? nx - ny : ny - nx;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener('click', sortBy);
+      th.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sortBy(); }
+      });
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var GEN = document.querySelector('meta[name="brief-generated"]').content;
+  var STALE_H = 20;
+
+  // ---- stale-data banner -------------------------------------------------
+  function ageText(ms){
+    var h = ms / 3.6e6;
+    if (h < 48) return Math.round(h) + ' hours ago';
+    return Math.floor(h / 24) + ' days ago';
+  }
+  function checkStale(){
+    var old = document.querySelector('.pb-stale'); if (old) old.remove();
+    var age = Date.now() - new Date(GEN).getTime();
+    if (!(age > STALE_H * 3.6e6)) return;
+    var when = new Date(GEN).toLocaleString([], {weekday:'short', month:'short',
+      day:'numeric', hour:'numeric', minute:'2-digit'});
+    var d = document.createElement('div');
+    d.className = 'pb-stale'; d.setAttribute('role', 'status');
+    d.innerHTML = '<b>Not today\u2019s brief.</b> These numbers are from ' + when +
+      ' (' + ageText(age) + '). The Surface hasn\u2019t published a newer one yet.';
+    var wrap = document.querySelector('.wrap') || document.body;
+    wrap.insertBefore(d, wrap.firstChild);
+  }
+
+  // ---- reload when a newer brief has been published ----------------------
+  function checkNewer(){
+    fetch('version.txt?t=' + Date.now(), {cache:'no-store'})
+      .then(function(r){ return r.ok ? r.text() : null; })
+      .then(function(v){
+        v = v && v.trim();
+        if (v && v !== GEN) location.replace(location.pathname + '?v=' + encodeURIComponent(v));
+      })
+      .catch(function(){ /* offline: keep what we have */ });
+  }
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible'){ checkStale(); checkNewer(); }
+  });
+  checkStale();
+  checkNewer();
+
+  // ---- tap-to-define on touchscreens --------------------------------------
+  if (!window.matchMedia('(hover: none)').matches) return;
+  document.querySelectorAll('[title]').forEach(function(el){
+    if (el.matches('th[role="button"]')) return;      // sort headers: tap sorts
+    el.setAttribute('data-tip', el.getAttribute('title'));
+    el.removeAttribute('title');
+  });
+  var tip = null, owner = null;
+  function close(){ if (tip){ tip.remove(); tip = null; owner = null; } }
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-tip]');
+    if (!t || t === owner){ close(); return; }
+    close();
+    owner = t;
+    tip = document.createElement('div');
+    tip.className = 'pb-tip';
+    tip.textContent = t.getAttribute('data-tip');
+    document.body.appendChild(tip);
+    var r = t.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = Math.max(16, Math.min(r.left, window.innerWidth - w - 16));
+    var top = r.bottom + 8;
+    if (top + h > window.innerHeight - 16) top = Math.max(16, r.top - h - 8);
+    tip.style.left = left + 'px'; tip.style.top = top + 'px';
+  });
+  window.addEventListener('scroll', close, {passive:true});
+})();
+</script>
+</body>
+</html>
